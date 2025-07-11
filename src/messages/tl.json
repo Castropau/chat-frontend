@@ -1,0 +1,16 @@
+{
+  "login": "Mag-login",
+  "email": "Email",
+  "password": "Password",
+  "welcome": "Maligayang pagbabalik 👋",
+  "signInToAccount": "Mag-sign in sa iyong account",
+  "forgotPassword": "Nakalimutan ang password?",
+  "noAccount": "Wala ka pang account?",
+  "registerNow": "Magrehistro Ngayon",
+  "loggingIn": "Nagla-login...",
+  "invalidEmail": "Mangyaring maglagay ng wastong email address.",
+  "emptyPassword": "Mangyaring ilagay ang iyong password.",
+  "networkError": "Problema sa network",
+  "wrongCredentials": "Mali ang email o password",
+  "generalError": "May nangyaring error"
+}

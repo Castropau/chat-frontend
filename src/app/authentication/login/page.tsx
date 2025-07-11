@@ -1,12 +1,13 @@
-import React from 'react'
-import Loginpage from './Login'
+import React from "react";
+import Loginpages from "./Login";
 
 const Page = () => {
   return (
     <div>
-      <Loginpage />
+      {/* <Loginpages /> */}
+      <Loginpages />
     </div>
-  )
-}
+  );
+};
 
-export default Page
+export default Page;

@@ -1,0 +1,16 @@
+{
+  "login": "Login",
+  "email": "Email",
+  "password": "Password",
+  "welcome": "Welcome back 👋",
+  "signInToAccount": "Sign in to your account",
+  "forgotPassword": "Forgot password?",
+  "noAccount": "Don't have an account?",
+  "registerNow": "Register Now",
+  "loggingIn": "Logging in...",
+  "invalidEmail": "Please enter a valid email address.",
+  "emptyPassword": "Please enter your password.",
+  "networkError": "Network error",
+  "wrongCredentials": "Email or password is incorrect",
+  "generalError": "An error occurred"
+}

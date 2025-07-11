@@ -22,6 +22,11 @@ export default function Middleware(req: NextRequest) {
     if (!LoggedIn && pathname === '/') {
         return NextResponse.redirect(new URL('/authentication/login', req.url));
     }
+
+
+    if (LoggedIn && pathname === '/authentication/login') {
+        return NextResponse.redirect(new URL('/dashboard', req.url));
+    }
 }
 
 export const config = {

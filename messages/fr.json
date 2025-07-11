@@ -1,0 +1,27 @@
+{
+  "TabTitle": {
+    "home": "Créer une application Next"
+  },
+  "LoginPage": {
+    "loginTitle": "Bon retour 👋",
+    "loginSubtitle": "Connectez-vous à votre compte",
+    "username": "Nom d'utilisateur",
+    "password": "Mot de passe",
+    "forgotPassword": "Mot de passe oublié ?",
+    "login": "Connexion",
+    "loggingIn": "Connexion en cours...",
+    "noAccount": "Vous n'avez pas de compte ?",
+    "registerNow": "Inscrivez-vous maintenant"
+  },
+  "SignUp": {
+    "SignUpSubtitle": "Connectez-vous à votre compte",
+    "email": "E-mail",
+    "username": "Nom d'utilisateur",
+    "password": "mot de passe",
+    "confirm_password": "Confirmez le mot de passe",
+    "Registering": "Enregistrement...",
+    "Register": "Registre",
+    "have_an_account": "tu as un compte?",
+    "signin": "Se connecter"
+  }
+}

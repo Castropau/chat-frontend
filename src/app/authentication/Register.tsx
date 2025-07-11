@@ -4,6 +4,7 @@ import axios, { AxiosError } from "axios";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 interface FormData {
   email: string;
@@ -63,12 +64,12 @@ const Register = () => {
     setError("");
     register(formData);
   };
-
+  const t = useTranslations("SignUp");
   return (
     <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <h2 className="mt-10 text-center text-2xl font-bold tracking-tight text-gray-900">
-          Sign up for an account
+          {t("SignUpSubtitle")}
         </h2>
       </div>
 
@@ -78,7 +79,7 @@ const Register = () => {
 
           <div>
             <label className="block text-sm font-medium text-gray-900">
-              Email address
+              {t("email")}
             </label>
             <input
               type="email"
@@ -92,7 +93,7 @@ const Register = () => {
 
           <div>
             <label className="block text-sm font-medium text-gray-900">
-              Username
+              {t("username")}
             </label>
             <input
               type="text"
@@ -106,7 +107,7 @@ const Register = () => {
 
           <div>
             <label className="block text-sm font-medium text-gray-900">
-              Password
+              {t("password")}
             </label>
             <input
               type="password"
@@ -120,7 +121,7 @@ const Register = () => {
 
           <div>
             <label className="block text-sm font-medium text-gray-900">
-              Confirm Password
+              {t("confirm_password")}
             </label>
             <input
               type="password"
@@ -137,14 +138,18 @@ const Register = () => {
             disabled={isLoading}
             className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold text-white hover:bg-indigo-500"
           >
-            {isLoading ? "Registering..." : "Sign up"}
+            {/* {isLoading ? "Registering..." : "Sign up"} */}
+            {isLoading ? t("Registering") : t("Register")}
           </button>
         </form>
 
         <p className="mt-10 text-center text-sm text-gray-500">
-          Already have an account?{" "}
-          <Link href="/" className="font-semibold text-indigo-600 hover:text-indigo-500">
-            Sign in
+          {t("have_an_account")}
+          <Link
+            href="/authentication/login"
+            className="font-semibold text-indigo-600 hover:text-indigo-500"
+          >
+            {t("signin")}
           </Link>
         </p>
       </div>
