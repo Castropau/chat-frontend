@@ -6,6 +6,10 @@ const nextConfig: NextConfig = {
     defaultLocale: 'en',
     localeDetection: false,
   },
+
+  env: {
+    baseUrl: 'http://192.168.0.112:8000'
+  }
 };
 
 export default nextConfig;

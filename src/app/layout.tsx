@@ -5,6 +5,7 @@ import Navbar from "./components/Navbar";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
 import Providers from "@/ReactQueryProvider";
+import { AuthProvider } from "./authentication/context/AuthContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,8 +36,12 @@ export default async function RootLayout({
       >
         <NextIntlClientProvider messages={messages}>
           <Providers>
-            <Navbar />
-            {children}
+            {/* <Navbar />
+            {children} */}
+              <AuthProvider> {/* ✅ Wrap with AuthProvider */}
+              <Navbar />
+              {children}
+            </AuthProvider>
           </Providers>
         </NextIntlClientProvider>
       </body>

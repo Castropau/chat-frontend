@@ -52,8 +52,13 @@
 
 // export default Navbar;
 "use client";
+// import { jwtDecode } from "jwt-decode";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
+// import jwtDecode from "jwt-decode";
+// import Cookies from "js-cookie"; // Make sure this is at the top
+import { useAuth } from "../authentication/context/AuthContext";
+
 
 const FlagEn = () => (
   <svg
@@ -128,6 +133,11 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const dropdownRef = useRef<HTMLDivElement>(null);
+    // const [userEmail, setUserEmail] = useState<string | null>(null);
+  // const { email } = useAuth();
+    const { userEmail, logout } = useAuth(); // get email from context directly
+
+
 
   useEffect(() => {
     const cookieLocale = document.cookie
@@ -164,13 +174,75 @@ export default function Navbar() {
   };
 
   const currentLang = languages.find((l) => l.code === locale) || languages[0];
+//  const token = localStorage.getItem("authTokens");
+//     if (token) {
+//       try {
+//         const decoded: DecodedToken = jwtDecode(token);
+//         setUserEmail(decoded.email || decoded.username); // fallback to username
+//       } catch (error) {
+//         console.error("Invalid token:", error);
+//       }
+//     }
+// useEffect(() => {
+//   const token = localStorage.getItem("authTokens");
+//   if (token) {
+//     try {
+//       const decoded: DecodedToken = jwtDecode(token);
+//       setUserEmail(decoded.email || decoded.username); // fallback to username
+//     } catch (error) {
+//       console.error("Invalid token:", error);
+//     }
+//   }
+// }, []);
 
+// useEffect(() => {
+//   // const token = Cookies.get("token"); // ✅ Use Cookies instead of localStorage
+//   const token = localStorage.getItem("authTokens") || Cookies.get("token");
+
+//   if (token) {
+//     try {
+//       const decoded: DecodedToken = jwtDecode(token);
+//       const emailOrUsername = decoded.email || decoded.username;
+//       setUserEmail(emailOrUsername);
+//       console.log("Decoded user email/username:", emailOrUsername); // ✅ This will now show
+//     } catch (error) {
+//       console.error("Invalid token:", error);
+//     }
+//   }
+// }, []);
+
+const handleLogout = () => {
+    logout();
+    router.push("/authentication/login"); // or wherever you want to send user after logout
+  };
   return (
     <nav className="w-full px-6 py-4 shadow-md bg-white dark:bg-gray-900 flex justify-between items-center">
       <div className="text-xl font-bold text-gray-800 dark:text-white">
         🌐 MyPlatform
       </div>
-
+ {/* {userEmail && (
+        <div className="text-sm text-gray-700 dark:text-white mr-4">
+          Signed in as <strong>{userEmail}</strong>
+        </div>
+      )} */}
+       {userEmail ? (
+        <div className="flex items-center gap-4">
+          <div className="text-sm text-gray-700 dark:text-white mr-4">
+            Signed in as <strong>{userEmail}</strong>
+          </div>
+          <button
+            onClick={handleLogout}
+            className="px-3 py-1 text-sm text-white bg-red-600 rounded hover:bg-red-700 transition"
+          >
+            Logout
+          </button>
+        </div>
+      ) : (
+        <div className="text-sm text-gray-700 dark:text-white mr-4">
+          Please login
+        </div>
+      )}
+      
       <div className="relative" ref={dropdownRef}>
         <button
           onClick={() => setIsOpen(!isOpen)}

@@ -33,14 +33,15 @@ const Register = () => {
 
   const { mutate: register, isLoading } = useMutation({
     mutationFn: (data: FormData) => {
-      return axios.post("http://192.168.0.112:8000/register/", {
+      return axios.post("http://192.168.0.112:8000/api/register/", {
         email: data.email,
         username: data.username,
         password: data.password,
+        password2: data.password2,
       });
     },
     onSuccess: () => {
-      router.push("/login");
+      router.push("/authentication/login");
     },
     onError: (error: AxiosError<any>) => {
       if (error.response?.data?.email) {

@@ -5,7 +5,7 @@
   "LoginPage": {
     "loginTitle": "Bon retour 👋",
     "loginSubtitle": "Connectez-vous à votre compte",
-    "username": "Nom d'utilisateur",
+    "email": "E-mail",
     "password": "Mot de passe",
     "forgotPassword": "Mot de passe oublié ?",
     "login": "Connexion",

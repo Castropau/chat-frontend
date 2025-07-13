@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import ChatHeader from './ChatHeader';
 import MessageList from './MessageList';
 import MessageInput from './MessageInput';
+import Image from 'next/image';
 
 const ConversationDetail: React.FC = () => {
   const activeUser = {
@@ -123,7 +124,7 @@ const ConversationDetail: React.FC = () => {
                 <h3 className="text-sm font-semibold mb-2">Images Sent</h3>
                 <div className="flex space-x-2 overflow-x-auto">
                   {sentImage.map((src, index) => (
-                    <img
+                    <Image
                       key={index}
                       src={src}
                       alt={`Image ${index + 1}`}
@@ -231,7 +232,7 @@ const ConversationDetail: React.FC = () => {
                 className="relative bg-white rounded shadow-lg max-w-lg max-h-full p-4"
                 onClick={(e) => e.stopPropagation()}
               >
-                <img
+                <Image
                   src={sentImage[previewIndex]}
                   alt={`Preview ${previewIndex + 1}`}
                   className="max-w-full max-h-[80vh] rounded"

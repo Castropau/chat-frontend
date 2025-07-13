@@ -5,7 +5,7 @@
   "LoginPage": {
     "loginTitle": "Welcome back 👋",
     "loginSubtitle": "Sign in to your account",
-    "username": "Username",
+    "email": "Email",
     "password": "Password",
     "forgotPassword": "Forgot password?",
     "login": "Login",
