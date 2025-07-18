@@ -11,7 +11,13 @@
     "login": "로그인",
     "loggingIn": "로그인 중...",
     "noAccount": "계정이 없으신가요?",
-    "registerNow": "지금 등록하세요"
+    "registerNow": "지금 등록하세요",
+    "incorrect": "이메일 또는 비밀번호가 올바르지 않습니다.",
+    "invalidEmail": "유효한 이메일 주소를 입력해주세요.",
+    "emptyPassword": "비밀번호를 입력해주세요.",
+    "networkError": "네트워크 오류입니다. 다시 시도해주세요.",
+    "genericError": "예기치 않은 오류가 발생했습니다."
+
   },
   "SignUp": {
     "SignUpSubtitle": "계정에 로그인하세요",
@@ -23,6 +29,7 @@
     "Register": "등록하다",
     "have_an_account": "계정이 있나요?",
     "signin": "제출하다"
+    
   }
   
 }

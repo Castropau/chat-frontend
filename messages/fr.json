@@ -11,7 +11,12 @@
     "login": "Connexion",
     "loggingIn": "Connexion en cours...",
     "noAccount": "Vous n'avez pas de compte ?",
-    "registerNow": "Inscrivez-vous maintenant"
+    "registerNow": "Inscrivez-vous maintenant",
+    "incorrect": "L'e-mail ou le mot de passe est incorrect",
+    "invalidEmail": "Veuillez entrer une adresse e-mail valide.",
+    "emptyPassword": "Veuillez entrer votre mot de passe.",
+    "networkError": "Erreur réseau. Veuillez réessayer.",
+    "genericError": "Une erreur inattendue s'est produite."
   },
   "SignUp": {
     "SignUpSubtitle": "Connectez-vous à votre compte",
@@ -23,5 +28,6 @@
     "Register": "Registre",
     "have_an_account": "tu as un compte?",
     "signin": "Se connecter"
+    
   }
 }

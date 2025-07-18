@@ -11,7 +11,12 @@
     "login": "Login",
     "loggingIn": "Logging in...",
     "noAccount": "Don’t have an account?",
-    "registerNow": "Register Now"
+    "registerNow": "Register Now",
+    "incorrect": "Email or password is incorrect",
+    "invalidEmail": "Please enter a valid email address.",
+    "emptyPassword": "Please enter your password.",
+    "networkError": "Network error. Please try again.",
+    "genericError": "An unexpected error occurred."
   },
   "SignUp": {
     "SignUpSubtitle": "Sign in to your account",
@@ -23,5 +28,6 @@
     "Register": "Register",
     "have_an_account": "Don't have an account?",
     "signin": "Login"
+    
   }
 }

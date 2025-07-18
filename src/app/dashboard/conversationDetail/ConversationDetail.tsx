@@ -1,19 +1,18 @@
-
 "use client";
-import React, { useState } from 'react';
-import ChatHeader from './ChatHeader';
-import MessageList from './MessageList';
-import MessageInput from './MessageInput';
-import Image from 'next/image';
+import React, { useState } from "react";
+import ChatHeader from "./ChatHeader";
+import MessageList from "./MessageList";
+import MessageInput from "./MessageInput";
+import Image from "next/image";
 
 const ConversationDetail: React.FC = () => {
   const activeUser = {
-    name: 'Alice',
-    avatar: 'https://i.pravatar.cc/40?u=alice',
-    status: 'Online',
-    email: 'alice@example.com',
-    phone: '+1 234 567 8901',
-    lastSeen: '2 hours ago',
+    name: "Alice",
+    avatar: "https://i.pravatar.cc/40?u=alice",
+    status: "Online",
+    email: "alice@example.com",
+    phone: "+1 234 567 8901",
+    lastSeen: "2 hours ago",
   };
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -21,7 +20,9 @@ const ConversationDetail: React.FC = () => {
   const [previewIndex, setPreviewIndex] = useState<number | null>(null);
 
   // Selected tab state
-  const [activeTab, setActiveTab] = useState<'images' | 'links' | 'videos' | 'more'>('images');
+  const [activeTab, setActiveTab] = useState<
+    "images" | "links" | "videos" | "more"
+  >("images");
 
   // Image preview handlers (you can expand this to a modal/lightbox if you want)
   const openPreview = (index: number) => setPreviewIndex(index);
@@ -39,24 +40,28 @@ const ConversationDetail: React.FC = () => {
 
   // Dummy content arrays
   const sentImage = [
-    'https://randomuser.me/api/portraits/women/68.jpg',
-    'https://randomuser.me/api/portraits/men/32.jpg',
-    'https://randomuser.me/api/portraits/women/44.jpg',
+    "https://randomuser.me/api/portraits/women/68.jpg",
+    "https://randomuser.me/api/portraits/men/32.jpg",
+    "https://randomuser.me/api/portraits/women/44.jpg",
   ];
 
-  const links = ['https://openai.com', 'https://reactjs.org'];
+  const links = ["https://openai.com", "https://reactjs.org"];
 
-  const videos = ['https://www.w3schools.com/html/mov_bbb.mp4']; // sample video URL
+  const videos = ["https://www.w3schools.com/html/mov_bbb.mp4"]; // sample video URL
 
   return (
     <div className="flex flex-1 h-full bg-gray-100">
       <div className="flex flex-col flex-1">
         {/* Header */}
         <div className="flex items-center justify-between border-b border-gray-200 bg-white shadow-sm px-4 py-3">
-          <ChatHeader name={activeUser.name} avatar={activeUser.avatar} status={activeUser.status} />
+          <ChatHeader
+            name={activeUser.name}
+            avatar={activeUser.avatar}
+            status={activeUser.status}
+          />
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            aria-label={sidebarOpen ? 'Close sidebar' : 'Open sidebar'}
+            aria-label={sidebarOpen ? "Close sidebar" : "Open sidebar"}
             className="p-2 rounded hover:bg-gray-200"
           >
             {sidebarOpen ? (
@@ -67,7 +72,11 @@ const ConversationDetail: React.FC = () => {
                 strokeWidth="2"
                 viewBox="0 0 24 24"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             ) : (
               <svg
@@ -77,7 +86,11 @@ const ConversationDetail: React.FC = () => {
                 strokeWidth="2"
                 viewBox="0 0 24 24"
               >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4 12h16M12 4v16" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M4 12h16M12 4v16"
+                />
               </svg>
             )}
           </button>
@@ -93,7 +106,11 @@ const ConversationDetail: React.FC = () => {
         <div className="w-80 bg-white border-l border-gray-200 p-4 overflow-y-auto flex flex-col">
           {/* Profile Section */}
           <div className="flex items-center space-x-3 mb-6">
-            <img src={activeUser.avatar} alt={activeUser.name} className="w-12 h-12 rounded-full" />
+            <img
+              src={activeUser.avatar}
+              alt={activeUser.name}
+              className="w-12 h-12 rounded-full"
+            />
             <div>
               <p className="font-semibold text-gray-900">{activeUser.name}</p>
               <p className="text-sm text-gray-500">{activeUser.status}</p>
@@ -102,14 +119,14 @@ const ConversationDetail: React.FC = () => {
 
           {/* Tabs Navigation */}
           <nav className="mb-4 flex space-x-2 border-b border-gray-200">
-            {['images', 'links', 'videos', 'more'].map((tab) => (
+            {["images", "links", "videos", "more"].map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab as any)}
                 className={`flex-1 py-2 text-center text-sm font-medium border-b-2 ${
                   activeTab === tab
-                    ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    ? "border-blue-500 text-blue-600"
+                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
                 }`}
               >
                 {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -119,7 +136,7 @@ const ConversationDetail: React.FC = () => {
 
           {/* Tab Content */}
           <div className="flex-1 overflow-y-auto">
-            {activeTab === 'images' && (
+            {activeTab === "images" && (
               <div>
                 <h3 className="text-sm font-semibold mb-2">Images Sent</h3>
                 <div className="flex space-x-2 overflow-x-auto">
@@ -136,13 +153,18 @@ const ConversationDetail: React.FC = () => {
               </div>
             )}
 
-            {activeTab === 'links' && (
+            {activeTab === "links" && (
               <div>
                 <h3 className="text-sm font-semibold mb-2">Shared Links</h3>
                 <ul className="text-sm text-blue-600 space-y-1">
                   {links.map((link, i) => (
                     <li key={i}>
-                      <a href={link} target="_blank" rel="noreferrer" className="hover:underline">
+                      <a
+                        href={link}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="hover:underline"
+                      >
                         {link}
                       </a>
                     </li>
@@ -151,12 +173,17 @@ const ConversationDetail: React.FC = () => {
               </div>
             )}
 
-            {activeTab === 'videos' && (
+            {activeTab === "videos" && (
               <div>
                 <h3 className="text-sm font-semibold mb-2">Shared Videos</h3>
                 {videos.length > 0 ? (
                   videos.map((videoUrl, i) => (
-                    <video key={i} src={videoUrl} controls className="w-full rounded mb-2" />
+                    <video
+                      key={i}
+                      src={videoUrl}
+                      controls
+                      className="w-full rounded mb-2"
+                    />
                   ))
                 ) : (
                   <p className="text-sm text-gray-500">No videos shared yet.</p>
@@ -164,7 +191,7 @@ const ConversationDetail: React.FC = () => {
               </div>
             )}
 
-            {activeTab === 'more' && (
+            {activeTab === "more" && (
               <div>
                 <h3 className="text-sm font-semibold mb-2">More Options</h3>
 
@@ -204,16 +231,19 @@ const ConversationDetail: React.FC = () => {
                     id="muteNotifications"
                     type="checkbox"
                     className="mr-2"
-                    onChange={() => alert('Toggle mute notifications')}
+                    onChange={() => alert("Toggle mute notifications")}
                   />
-                  <label htmlFor="muteNotifications" className="text-sm text-gray-700">
+                  <label
+                    htmlFor="muteNotifications"
+                    className="text-sm text-gray-700"
+                  >
                     Mute Notifications
                   </label>
                 </div>
 
                 {/* Block User button */}
                 <button
-                  onClick={() => alert('User blocked')}
+                  onClick={() => alert("User blocked")}
                   className="w-full py-2 bg-red-600 text-white rounded hover:bg-red-700 transition"
                 >
                   Block User

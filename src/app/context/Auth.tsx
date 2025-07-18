@@ -30,7 +30,9 @@ interface AuthContextType {
   logoutUser: () => void;
 }
 
-export const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const AuthContext = createContext<AuthContextType | undefined>(
+  undefined
+);
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -47,7 +49,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const [user, setUser] = useState<DecodedUser | null>(() =>
     typeof window !== "undefined" && localStorage.getItem("authTokens")
-      ? jwt_decode<DecodedUser>(JSON.parse(localStorage.getItem("authTokens")!).access)
+      ? jwt_decode<DecodedUser>(
+          JSON.parse(localStorage.getItem("authTokens")!).access
+        )
       : null
   );
 

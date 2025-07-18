@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-xmyy56c+#c$!7u^#8#&(egh&2_+or##y4+t)xps)i#zbhlw(5o
 DEBUG = True
 
 # ALLOWED_HOSTS = []
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '192.168.0.112']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '192.168.0.122']
 
 
 
@@ -51,7 +51,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'mathfilters',
     'django.contrib.humanize',
-    'ckeditor',
+    # 'ckeditor',
     'ckeditor_uploader',
     'django_ckeditor_5',
     'taggit',
@@ -98,8 +98,9 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'chat',  # Replace with your database name
+        'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': 'chat',  # Replace with your database name
+        'NAME': BASE_DIR / 'db.sqlite3',  # This means the DB file is at your project root
         'USER': 'paulo',  # Replace with your PostgreSQL username
         'PASSWORD': 'castro',  # Replace with your PostgreSQL password
         'HOST': 'localhost',  # or an IP address if it's hosted somewhere else

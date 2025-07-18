@@ -1,9 +1,9 @@
-import React, { useEffect, useRef } from 'react';
-import MessageItem from './MessageItem';
+import React, { useEffect, useRef } from "react";
+import MessageItem from "./MessageItem";
 
 const messages = [
-  { id: '1', sender: 'Alice', content: 'Hi there!' },
-  { id: '2', sender: 'You', content: 'Hello!' },
+  { id: "1", sender: "Alice", content: "Hi there!" },
+  { id: "2", sender: "You", content: "Hello!" },
 ];
 
 const MessageList: React.FC = () => {

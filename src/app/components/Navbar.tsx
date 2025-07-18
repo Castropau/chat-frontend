@@ -58,7 +58,10 @@ import React, { useEffect, useRef, useState } from "react";
 // import jwtDecode from "jwt-decode";
 // import Cookies from "js-cookie"; // Make sure this is at the top
 import { useAuth } from "../authentication/context/AuthContext";
-
+import Link from "next/link";
+import { FaFacebookMessenger } from "react-icons/fa";
+import CreateGoalModal from "../dashboard/timeline/_components/CreateGoalModal";
+import { MdViewTimeline } from "react-icons/md";
 
 const FlagEn = () => (
   <svg
@@ -133,11 +136,9 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const dropdownRef = useRef<HTMLDivElement>(null);
-    // const [userEmail, setUserEmail] = useState<string | null>(null);
+  // const [userEmail, setUserEmail] = useState<string | null>(null);
   // const { email } = useAuth();
-    const { userEmail, logout } = useAuth(); // get email from context directly
-
-
+  const { userEmail, logout } = useAuth(); // get email from context directly
 
   useEffect(() => {
     const cookieLocale = document.cookie
@@ -174,44 +175,44 @@ export default function Navbar() {
   };
 
   const currentLang = languages.find((l) => l.code === locale) || languages[0];
-//  const token = localStorage.getItem("authTokens");
-//     if (token) {
-//       try {
-//         const decoded: DecodedToken = jwtDecode(token);
-//         setUserEmail(decoded.email || decoded.username); // fallback to username
-//       } catch (error) {
-//         console.error("Invalid token:", error);
-//       }
-//     }
-// useEffect(() => {
-//   const token = localStorage.getItem("authTokens");
-//   if (token) {
-//     try {
-//       const decoded: DecodedToken = jwtDecode(token);
-//       setUserEmail(decoded.email || decoded.username); // fallback to username
-//     } catch (error) {
-//       console.error("Invalid token:", error);
-//     }
-//   }
-// }, []);
+  //  const token = localStorage.getItem("authTokens");
+  //     if (token) {
+  //       try {
+  //         const decoded: DecodedToken = jwtDecode(token);
+  //         setUserEmail(decoded.email || decoded.username); // fallback to username
+  //       } catch (error) {
+  //         console.error("Invalid token:", error);
+  //       }
+  //     }
+  // useEffect(() => {
+  //   const token = localStorage.getItem("authTokens");
+  //   if (token) {
+  //     try {
+  //       const decoded: DecodedToken = jwtDecode(token);
+  //       setUserEmail(decoded.email || decoded.username); // fallback to username
+  //     } catch (error) {
+  //       console.error("Invalid token:", error);
+  //     }
+  //   }
+  // }, []);
 
-// useEffect(() => {
-//   // const token = Cookies.get("token"); // ✅ Use Cookies instead of localStorage
-//   const token = localStorage.getItem("authTokens") || Cookies.get("token");
+  // useEffect(() => {
+  //   // const token = Cookies.get("token"); // ✅ Use Cookies instead of localStorage
+  //   const token = localStorage.getItem("authTokens") || Cookies.get("token");
 
-//   if (token) {
-//     try {
-//       const decoded: DecodedToken = jwtDecode(token);
-//       const emailOrUsername = decoded.email || decoded.username;
-//       setUserEmail(emailOrUsername);
-//       console.log("Decoded user email/username:", emailOrUsername); // ✅ This will now show
-//     } catch (error) {
-//       console.error("Invalid token:", error);
-//     }
-//   }
-// }, []);
+  //   if (token) {
+  //     try {
+  //       const decoded: DecodedToken = jwtDecode(token);
+  //       const emailOrUsername = decoded.email || decoded.username;
+  //       setUserEmail(emailOrUsername);
+  //       console.log("Decoded user email/username:", emailOrUsername); // ✅ This will now show
+  //     } catch (error) {
+  //       console.error("Invalid token:", error);
+  //     }
+  //   }
+  // }, []);
 
-const handleLogout = () => {
+  const handleLogout = () => {
     logout();
     router.push("/authentication/login"); // or wherever you want to send user after logout
   };
@@ -220,12 +221,12 @@ const handleLogout = () => {
       <div className="text-xl font-bold text-gray-800 dark:text-white">
         🌐 MyPlatform
       </div>
- {/* {userEmail && (
+      {/* {userEmail && (
         <div className="text-sm text-gray-700 dark:text-white mr-4">
           Signed in as <strong>{userEmail}</strong>
         </div>
       )} */}
-       {userEmail ? (
+      {userEmail ? (
         <div className="flex items-center gap-4">
           <div className="text-sm text-gray-700 dark:text-white mr-4">
             Signed in as <strong>{userEmail}</strong>
@@ -242,8 +243,25 @@ const handleLogout = () => {
           Please login
         </div>
       )}
-      
-      <div className="relative" ref={dropdownRef}>
+
+      <div className="relative flex" ref={dropdownRef}>
+        <CreateGoalModal />
+        <Link
+          href="/dashboard/timeline"
+          className="mr-3 text-blue-600 hover:text-blue-800 transition flex items-center"
+          aria-label="Facebook Messenger"
+          title="Timeline"
+        >
+          <MdViewTimeline className="text-2xl" />
+        </Link>
+        <Link
+          href="/dashboard/"
+          className="mr-3 text-blue-600 hover:text-blue-800 transition flex items-center"
+          aria-label="Facebook Messenger"
+          title="Messenger"
+        >
+          <FaFacebookMessenger className="text-2xl" />
+        </Link>
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="flex items-center gap-2 px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-sm text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 transition"
@@ -264,7 +282,14 @@ const handleLogout = () => {
             />
           </svg>
         </button>
-
+        {/* <Link
+          href="/dashboard/"
+          className="ml-3 text-blue-600 hover:text-blue-800 transition flex items-center"
+          aria-label="Facebook Messenger"
+          title="Messenger"
+        >
+          <FaFacebookMessenger className="text-2xl" />
+        </Link> */}
         {isOpen && (
           <div className="absolute right-0 mt-2 bg-white dark:bg-gray-800 shadow-lg rounded-lg z-20 w-44">
             {languages.map(({ code, label, Flag }) => (

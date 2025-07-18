@@ -1,42 +1,45 @@
 "use client";
 
 import React, { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
-import Cookies from "js-cookie";
+// import Cookies from "js-cookie";
 import { useAuth } from "../context/AuthContext";
+import { setCookies } from "@/server/action/setCookies";
 
 export default function LoginPage() {
   const router = useRouter();
   const t = useTranslations("LoginPage");
 
   const [formData, setFormData] = useState({ email: "", password: "" });
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorKey, setErrorKey] = useState<string | null>(null);
   const { setToken } = useAuth();
+  // const queryClient = useQueryClient();
 
-   const { mutate: login, isLoading } = useMutation({
+  const { mutate: login, isPending } = useMutation({
     mutationFn: (data: { email: string; password: string }) =>
-      axios.post("http://192.168.0.112:8000/api/token/", data),
+      axios.post("http://192.168.0.122:8000/api/token/", data),
     onSuccess: (response) => {
       const token = response.data.access;
-      Cookies.set("token", token);
-      setToken(token); // <-- Update context here to reflect login immediately
+      // Cookies.set("token", token);
+      setCookies("token", token);
+      setToken(token);
       router.push("/dashboard");
     },
     onError: (error) => {
       if (error instanceof AxiosError) {
         if (error.code === "ERR_NETWORK") {
-          setErrorMessage("Network error");
+          setErrorKey("networkError");
         } else if (error.response?.status === 401) {
-          setErrorMessage("Email or password is incorrect");
+          setErrorKey("incorrect");
         } else {
-          setErrorMessage("An error occurred");
+          setErrorKey("genericError");
         }
       } else {
-        setErrorMessage("An error occurred");
+        setErrorKey("genericError");
       }
     },
   });
@@ -54,14 +57,14 @@ export default function LoginPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setErrorMessage("");
+    setErrorKey(null);
 
     if (!formData.email || !validateEmail(formData.email)) {
-      setErrorMessage("Please enter a valid email address.");
+      setErrorKey("invalidEmail");
       return;
     }
     if (!formData.password) {
-      setErrorMessage("Please enter your password.");
+      setErrorKey("emptyPassword");
       return;
     }
 
@@ -84,8 +87,8 @@ export default function LoginPage() {
           </h2>
           <p className="text-gray-600 mb-8">{t("loginSubtitle")}</p>
 
-          {errorMessage && (
-            <div className="mb-4 text-red-500 text-sm">{errorMessage}</div>
+          {errorKey && (
+            <div className="mb-4 text-red-500 text-sm">{t(errorKey)}</div>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -131,10 +134,10 @@ export default function LoginPage() {
 
             <button
               type="submit"
-              disabled={isLoading}
+              disabled={isPending}
               className="w-full bg-rose-500 hover:bg-rose-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300 disabled:opacity-50"
             >
-              {isLoading ? t("loggingIn") : t("login")}
+              {isPending ? t("loggingIn") : t("login")}
             </button>
           </form>
 

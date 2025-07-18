@@ -31,9 +31,9 @@ const Register = () => {
     }));
   };
 
-  const { mutate: register, isLoading } = useMutation({
+  const { mutate: register, isPending } = useMutation({
     mutationFn: (data: FormData) => {
-      return axios.post("http://192.168.0.112:8000/api/register/", {
+      return axios.post("http://192.168.0.122:8000/api/register/", {
         email: data.email,
         username: data.username,
         password: data.password,
@@ -88,7 +88,7 @@ const Register = () => {
               value={formData.email}
               onChange={handleChange}
               required
-              className="mt-2 block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:outline-indigo-600 sm:text-sm"
+              className="mt-2 block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline  outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:outline-indigo-600 sm:text-sm"
             />
           </div>
 
@@ -102,7 +102,7 @@ const Register = () => {
               value={formData.username}
               onChange={handleChange}
               required
-              className="mt-2 block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:outline-indigo-600 sm:text-sm"
+              className="mt-2 block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline  outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:outline-indigo-600 sm:text-sm"
             />
           </div>
 
@@ -116,7 +116,7 @@ const Register = () => {
               value={formData.password}
               onChange={handleChange}
               required
-              className="mt-2 block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:outline-indigo-600 sm:text-sm"
+              className="mt-2 block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline  outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:outline-indigo-600 sm:text-sm"
             />
           </div>
 
@@ -130,17 +130,17 @@ const Register = () => {
               value={formData.password2}
               onChange={handleChange}
               required
-              className="mt-2 block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:outline-indigo-600 sm:text-sm"
+              className="mt-2 block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline  outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:outline-indigo-600 sm:text-sm"
             />
           </div>
 
           <button
             type="submit"
-            disabled={isLoading}
+            disabled={isPending}
             className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold text-white hover:bg-indigo-500"
           >
-            {/* {isLoading ? "Registering..." : "Sign up"} */}
-            {isLoading ? t("Registering") : t("Register")}
+            {/* {isPending ? "Registering..." : "Sign up"} */}
+            {isPending ? t("Registering") : t("Register")}
           </button>
         </form>
 

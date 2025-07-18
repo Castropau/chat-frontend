@@ -7,7 +7,7 @@ export default function Middleware(req: NextRequest) {
 
     // login user auth
     if(LoggedIn && pathname === '/') {
-      return NextResponse.redirect(new URL('/dashboard', req.url));
+      return NextResponse.redirect(new URL('/dashboard/timeline', req.url));
     }
     if(!LoggedIn && pathname === '/dashboard') {
       return NextResponse.redirect(new URL('/authentication/login', req.url));
@@ -25,7 +25,7 @@ export default function Middleware(req: NextRequest) {
 
 
     if (LoggedIn && pathname === '/authentication/login') {
-        return NextResponse.redirect(new URL('/dashboard', req.url));
+        return NextResponse.redirect(new URL('/dashboard/timeline', req.url));
     }
 }
 
