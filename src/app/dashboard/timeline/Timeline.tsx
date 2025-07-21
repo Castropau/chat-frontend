@@ -70,18 +70,16 @@ const Timeline: React.FC = () => {
   };
 
   const handleShare = (post: Post) => {
-    // Placeholder for share functionality
     alert(`Shared post by ${post.name} about "${post.goal}"!`);
   };
+
   const [reactionPickerPostId, setReactionPickerPostId] = useState<
     number | null
   >(null);
 
-  // Store selected reaction per post
   const [selectedReactions, setSelectedReactions] = useState<
     Record<number, string | null>
   >({});
-
   const reactions = [
     { emoji: "👍", label: "Like" },
     { emoji: "❤️", label: "Love" },
@@ -95,187 +93,222 @@ const Timeline: React.FC = () => {
   const handleReaction = (postId: number, emoji: string) => {
     setSelectedReactions((prev) => {
       const current = prev[postId];
-      // If user clicks the same emoji again → remove it
       const newReaction = current === emoji ? null : emoji;
       return { ...prev, [postId]: newReaction };
     });
     setReactionPickerPostId(null); // close picker
   };
-
+  const mockFollowers = [
+    { id: 1, name: "Anna Lee", online: true },
+    { id: 2, name: "John Smith", online: false },
+    { id: 3, name: "Michael Jordan", online: true },
+    { id: 4, name: "Sarah Park", online: true },
+  ];
   return (
-    <div className="max-w-xl mx-auto p-6  min-h-screen">
-      <FilterBar
-        selected={selectedCategories}
-        onSelect={setSelectedCategories}
-      />
-      <CreateGoal />
+    <div className="min-h-screen flex">
+      {/* Left Sidebar */}
+      <div className="w-1/4 bg-gray-100 p-6 rounded-xl shadow-lg">
+        <h3 className="font-semibold text-xl mb-4">Settings</h3>
+        <div className="space-y-4">
+          <button className="block w-full text-left bg-blue-500 text-white p-3 rounded-md">
+            Change Theme
+          </button>
+          <button className="block w-full text-left bg-green-500 text-white p-3 rounded-md">
+            Manage Notifications
+          </button>
+          <button className="block w-full text-left bg-yellow-500 text-white p-3 rounded-md">
+            Update Profile
+          </button>
+        </div>
+      </div>
 
-      {filteredPosts.length === 0 ? (
-        <p className="text-center text-gray-500 mt-20 text-lg font-light">
-          No posts found for selected.
-        </p>
-      ) : (
-        filteredPosts.map((post) => (
-          <article
-            key={post.id}
-            className="bg-white shadow-md rounded-xl p-6 mb-8 border border-gray-200 hover:shadow-lg transition-shadow"
-          >
-            {/* User Info */}
-            <div className="flex items-center space-x-5 mb-4">
-              <img
-                src={`https://api.dicebear.com/8.x/initials/svg?seed=${post.name}`}
-                alt="Avatar"
-                className="w-14 h-14 rounded-full object-cover border-2 border-blue-400"
-              />
-              <div>
-                <h2 className="font-semibold text-lg text-gray-900">
-                  {post.name}
-                </h2>
-                <p className="text-sm text-blue-600 font-medium">
-                  Goal: {post.goal}
-                </p>
+      {/* Center Timeline */}
+      <div className="flex-1 p-6 max-w-xl mx-auto">
+        <FilterBar
+          selected={selectedCategories}
+          onSelect={setSelectedCategories}
+        />
+        <CreateGoal />
+
+        {filteredPosts.length === 0 ? (
+          <p className="text-center text-gray-500 mt-20 text-lg font-light">
+            No posts found for selected.
+          </p>
+        ) : (
+          filteredPosts.map((post) => (
+            <article
+              key={post.id}
+              className="bg-white shadow-md rounded-xl p-6 mb-8 border border-gray-200 hover:shadow-lg transition-shadow"
+            >
+              {/* User Info */}
+              <div className="flex items-center space-x-5 mb-4">
+                <img
+                  src={`https://api.dicebear.com/8.x/initials/svg?seed=${post.name}`}
+                  alt="Avatar"
+                  className="w-14 h-14 rounded-full object-cover border-2 border-blue-400"
+                />
+                <div>
+                  <h2 className="font-semibold text-lg text-gray-900">
+                    {post.name}
+                  </h2>
+                  <p className="text-sm text-blue-600 font-medium">
+                    Goal: {post.goal}
+                  </p>
+                </div>
               </div>
-            </div>
 
-            {/* Post Text */}
-            <p className="text-gray-800 mb-4 leading-relaxed">{post.text}</p>
+              {/* Post Text */}
+              <p className="text-gray-800 mb-4 leading-relaxed">{post.text}</p>
 
-            {/* Media */}
-            {post.image && (
-              <img
-                src={post.image}
-                alt="Progress"
-                className="w-full rounded-lg mb-4 shadow-sm object-cover max-h-60"
-              />
-            )}
-            {post.video && (
-              <video
-                controls
-                className="w-full rounded-lg mb-4 shadow-sm max-h-60"
-              >
-                <source src={post.video} type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-            )}
-
-            {/* Reactions */}
-            <div className="flex space-x-6 border-t border-gray-200 pt-4">
-              <button
-                aria-label="Say Hi"
-                className="text-2xl hover:scale-125 transition transform"
-                title="Say Hi"
-              >
-                👋
-              </button>
-              <button
-                aria-label="Muscle"
-                className="text-2xl hover:scale-125 transition transform"
-                title="Muscle"
-              >
-                💪
-              </button>
-              <button
-                aria-label="Fire"
-                className="text-2xl hover:scale-125 transition transform"
-                title="Fire"
-              >
-                🔥
-              </button>
-            </div>
-
-            {/* Comment & Share */}
-            {/* Comment / Share / Reaction */}
-            {/* Comment / Share / React */}
-            <div className="flex space-x-10 mt-6 border-t border-gray-200 pt-4 relative items-center">
-              <button
-                onClick={() => toggleCommentBox(post.id)}
-                className="flex items-center gap-2 text-blue-600 font-semibold hover:underline focus:outline-none"
-              >
-                <FiMessageCircle className="text-xl" />
-                {commentOpenFor === post.id ? "Hide Comments" : "Comment"}
-              </button>
-
-              <button
-                onClick={() => handleShare(post)}
-                className="flex items-center gap-2 text-green-600 font-semibold hover:underline focus:outline-none"
-              >
-                <FiShare2 className="text-xl" />
-                Share
-              </button>
-
-              {/* Reaction Button */}
-              <div className="relative">
-                <button
-                  onClick={() =>
-                    setReactionPickerPostId(
-                      reactionPickerPostId === post.id ? null : post.id
-                    )
-                  }
-                  className="flex items-center gap-2 text-yellow-600 font-semibold hover:underline focus:outline-none hover:cursor-pointer"
-                  title={
-                    selectedReactions[post.id]
-                      ? `Remove "${selectedReactions[post.id]}" reaction`
-                      : "React"
-                  }
+              {/* Media */}
+              {post.image && (
+                <img
+                  src={post.image}
+                  alt="Progress"
+                  className="w-full rounded-lg mb-4 shadow-sm object-cover max-h-60"
+                />
+              )}
+              {post.video && (
+                <video
+                  controls
+                  className="w-full rounded-lg mb-4 shadow-sm max-h-60"
                 >
-                  <FiSmile className="text-xl" />
-                  {selectedReactions[post.id]
-                    ? selectedReactions[post.id]
-                    : "React"}
+                  <source src={post.video} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              )}
+
+              {/* Reactions */}
+              <div className="flex space-x-6 border-t border-gray-200 pt-4">
+                <button
+                  aria-label="Say Hi"
+                  className="text-2xl hover:scale-125 transition transform"
+                  title="Say Hi"
+                >
+                  👋
+                </button>
+                <button
+                  aria-label="Muscle"
+                  className="text-2xl hover:scale-125 transition transform"
+                  title="Muscle"
+                >
+                  💪
+                </button>
+                <button
+                  aria-label="Fire"
+                  className="text-2xl hover:scale-125 transition transform"
+                  title="Fire"
+                >
+                  🔥
+                </button>
+              </div>
+
+              {/* Comment & Share */}
+              <div className="flex space-x-10 mt-6 border-t border-gray-200 pt-4 relative items-center">
+                <button
+                  onClick={() => toggleCommentBox(post.id)}
+                  className="flex items-center gap-2 text-blue-600 font-semibold hover:underline focus:outline-none"
+                >
+                  <FiMessageCircle className="text-xl" />
+                  {commentOpenFor === post.id ? "Hide Comments" : "Comment"}
                 </button>
 
-                {/* Emoji Picker (only for this post) */}
-                {reactionPickerPostId === post.id && (
-                  <div className="absolute top-full mt-2 left-0 z-10 flex space-x-4 bg-white p-3 rounded shadow-md border">
-                    {/* {reactions.map((r) => (
-                      <button
-                        key={r.label}
-                        onClick={() => handleReaction(post.id, r.emoji)}
-                        title={r.label}
-                        className="flex flex-col items-center hover:scale-110 transition-transform"
-                      >
-                        <span className="text-2xl">{r.emoji}</span>
-                        <span className="text-xs mt-1 text-gray-600">
-                          {r.label}
-                        </span>
-                      </button>
-                    ))} */}
-                    {/* <div className="absolute top-full mt-2 left-0 z-10 flex space-x-4 bg-white p-3 rounded shadow-md border"> */}
-                    {reactions.map((r) => {
-                      const isSelected = selectedReactions[post.id] === r.emoji;
-                      return (
-                        <button
-                          key={r.label}
-                          onClick={() => handleReaction(post.id, r.emoji)}
-                          title={r.label}
-                          className={`flex flex-col items-center px-2 py-1 rounded transition-transform hover:cursor-pointer ${
-                            isSelected ? "bg-gray-200 font-bold" : ""
-                          } hover:scale-110`}
-                        >
-                          <span className="text-2xl">{r.emoji}</span>
-                          <span className="text-xs mt-1 text-gray-600">
-                            {r.label}
-                          </span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                  //   </div>
-                )}
-              </div>
-            </div>
+                <button
+                  onClick={() => handleShare(post)}
+                  className="flex items-center gap-2 text-green-600 font-semibold hover:underline focus:outline-none"
+                >
+                  <FiShare2 className="text-xl" />
+                  Share
+                </button>
 
-            {/* Comment Section */}
-            {commentOpenFor === post.id && (
-              <CommentSection
-                postId={post.id}
-                comments={comments[post.id] || []}
-                onAddComment={handleAddComment}
-              />
-            )}
-          </article>
-        ))
-      )}
+                {/* Reaction Button */}
+                <div className="relative">
+                  <button
+                    onClick={() =>
+                      setReactionPickerPostId(
+                        reactionPickerPostId === post.id ? null : post.id
+                      )
+                    }
+                    className="flex items-center gap-2 text-yellow-600 font-semibold hover:underline focus:outline-none hover:cursor-pointer"
+                    title={
+                      selectedReactions[post.id]
+                        ? `Remove "${selectedReactions[post.id]}" reaction`
+                        : "React"
+                    }
+                  >
+                    <FiSmile className="text-xl" />
+                    {selectedReactions[post.id]
+                      ? selectedReactions[post.id]
+                      : "React"}
+                  </button>
+
+                  {/* Emoji Picker (only for this post) */}
+                  {reactionPickerPostId === post.id && (
+                    <div className="absolute top-full mt-2 left-0 z-10 flex space-x-4 bg-white p-3 rounded shadow-md border">
+                      {reactions.map((r) => {
+                        const isSelected =
+                          selectedReactions[post.id] === r.emoji;
+                        return (
+                          <button
+                            key={r.label}
+                            onClick={() => handleReaction(post.id, r.emoji)}
+                            title={r.label}
+                            className={`flex flex-col items-center px-2 py-1 rounded transition-transform hover:cursor-pointer ${
+                              isSelected ? "bg-gray-200 font-bold" : ""
+                            } hover:scale-110`}
+                          >
+                            <span className="text-2xl">{r.emoji}</span>
+                            <span className="text-xs mt-1 text-gray-600">
+                              {r.label}
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Comment Section */}
+              {commentOpenFor === post.id && (
+                <CommentSection
+                  postId={post.id}
+                  comments={comments[post.id] || []}
+                  onAddComment={handleAddComment}
+                />
+              )}
+            </article>
+          ))
+        )}
+      </div>
+
+      {/* Right Sidebar */}
+      <div className="w-1/4 bg-gray-100 p-6">
+        <h3 className="font-semibold text-xl mb-4">Online Followers</h3>
+        <div className="space-y-4">
+          {mockFollowers.map((follower) => (
+            <div
+              key={follower.id}
+              className={`flex items-center space-x-3 p-2 rounded-md ${
+                follower.online ? "bg-green-100" : "bg-gray-200"
+              }`}
+            >
+              <div
+                className={`w-4 h-4 rounded-full ${
+                  follower.online ? "bg-green-500" : "bg-gray-400"
+                }`}
+              ></div>
+              <span
+                className={`${
+                  follower.online ? "text-green-800" : "text-gray-600"
+                }`}
+              >
+                {follower.name}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
