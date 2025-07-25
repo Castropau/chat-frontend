@@ -217,7 +217,7 @@ export default function Navbar() {
     router.push("/authentication/login"); // or wherever you want to send user after logout
   };
   return (
-    <nav className="w-full px-6 py-4 shadow-md bg-white dark:bg-gray-900 flex justify-between items-center">
+    <nav className="fixed top-0 w-full px-6 py-4 shadow-md bg-white dark:bg-gray-900 flex justify-between items-center">
       <div className="text-xl font-bold text-gray-800 dark:text-white">
         🌐 MyPlatform
       </div>

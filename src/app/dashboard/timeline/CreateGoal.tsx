@@ -31,7 +31,7 @@ export default function CreateGoal() {
   };
 
   return (
-    <div className="max-w-lg mx-auto bg-white dark:bg-gray-900 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 transition mb-2">
+    <div className="max-w-lg mx-auto bg-white dark:bg-gray-900 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 transition mb-2 mt-10">
       <h2 className="text-2xl font-semibold mb-6 text-gray-900 dark:text-white">
         🎯 Create a New Goal
       </h2>

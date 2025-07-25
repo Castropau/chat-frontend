@@ -38,7 +38,9 @@ export default async function RootLayout({
           <Providers>
             {/* <Navbar />
             {children} */}
-              <AuthProvider> {/* ✅ Wrap with AuthProvider */}
+            <AuthProvider>
+              {" "}
+              {/* ✅ Wrap with AuthProvider */}
               <Navbar />
               {children}
             </AuthProvider>

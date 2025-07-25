@@ -107,7 +107,8 @@ const Timeline: React.FC = () => {
   return (
     <div className="min-h-screen flex">
       {/* Left Sidebar */}
-      <div className="w-1/4 bg-gray-100 p-6 rounded-xl shadow-lg">
+      {/* <div className="w-1/4 bg-gray-100 p-6 rounded-xl shadow-lg"> */}
+      <div className="fixed left-0 top-18 h-full w-1/4 bg-gray-100 p-6 overflow-y-auto shadow-lg z-50">
         <h3 className="font-semibold text-xl mb-4">Settings</h3>
         <div className="space-y-4">
           <button className="block w-full text-left bg-blue-500 text-white p-3 rounded-md">
@@ -283,7 +284,8 @@ const Timeline: React.FC = () => {
       </div>
 
       {/* Right Sidebar */}
-      <div className="w-1/4 bg-gray-100 p-6">
+      {/* <div className="w-1/4 bg-gray-100 p-6"> */}
+      <div className="fixed right-0 top-18 h-full w-1/4 bg-gray-100 p-6 overflow-y-auto shadow-lg z-50">
         <h3 className="font-semibold text-xl mb-4">Online Followers</h3>
         <div className="space-y-4">
           {mockFollowers.map((follower) => (
