@@ -57,11 +57,18 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 // import jwtDecode from "jwt-decode";
 // import Cookies from "js-cookie"; // Make sure this is at the top
-import { useAuth } from "../authentication/context/AuthContext";
+// import { useAuth } from "../authentication/context/AuthContext";
 import Link from "next/link";
 import { FaFacebookMessenger } from "react-icons/fa";
 import CreateGoalModal from "../dashboard/timeline/_components/CreateGoalModal";
 import { MdViewTimeline } from "react-icons/md";
+import { deleteCookies } from "@/server/action/deleteCookies";
+import { ThemeToggleButton } from "./ThemeToggleButton";
+// import Notification from "../dashboard/timeline/_components/Notification";
+import NotificationBell from "../dashboard/timeline/_components/Notification";
+import UserDropdown from "./UserDropdown";
+import axios from "axios";
+import { useSession } from "next-auth/react";
 
 const FlagEn = () => (
   <svg
@@ -136,19 +143,31 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const dropdownRef = useRef<HTMLDivElement>(null);
-  // const [userEmail, setUserEmail] = useState<string | null>(null);
-  // const { email } = useAuth();
-  const { userEmail, logout } = useAuth(); // get email from context directly
+  const [isSigningOut, setIsSigningOut] = useState(false);
 
+  const { data: session, status } = useSession();
+
+  // const [user, setUser] = useState<{
+  //   id: number;
+  //   email: string;
+  //   firstname: string;
+  //   lastname?: string;
+  //   name?: string;
+  //   image?: string;
+  // } | null>(null);
+  const [user, setUser] = useState<User | null>(null);
+
+
+
+  // Set locale from cookie or browser
   useEffect(() => {
     const cookieLocale = document.cookie
       .split("; ")
       .find((row) => row.startsWith("MYNEXTAPP_LOCALE="))
       ?.split("=")[1];
 
-    if (cookieLocale) {
-      setLocale(cookieLocale);
-    } else {
+    if (cookieLocale) setLocale(cookieLocale);
+    else {
       const browserLocale = navigator.language.slice(0, 2);
       setLocale(browserLocale);
       document.cookie = `MYNEXTAPP_LOCALE=${browserLocale}; path=/`;
@@ -156,10 +175,7 @@ export default function Navbar() {
     }
 
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsOpen(false);
       }
     };
@@ -175,81 +191,202 @@ export default function Navbar() {
   };
 
   const currentLang = languages.find((l) => l.code === locale) || languages[0];
-  //  const token = localStorage.getItem("authTokens");
-  //     if (token) {
-  //       try {
-  //         const decoded: DecodedToken = jwtDecode(token);
-  //         setUserEmail(decoded.email || decoded.username); // fallback to username
-  //       } catch (error) {
-  //         console.error("Invalid token:", error);
-  //       }
-  //     }
-  // useEffect(() => {
-  //   const token = localStorage.getItem("authTokens");
-  //   if (token) {
-  //     try {
-  //       const decoded: DecodedToken = jwtDecode(token);
-  //       setUserEmail(decoded.email || decoded.username); // fallback to username
-  //     } catch (error) {
-  //       console.error("Invalid token:", error);
-  //     }
-  //   }
-  // }, []);
 
-  // useEffect(() => {
-  //   // const token = Cookies.get("token"); // ✅ Use Cookies instead of localStorage
-  //   const token = localStorage.getItem("authTokens") || Cookies.get("token");
-
-  //   if (token) {
-  //     try {
-  //       const decoded: DecodedToken = jwtDecode(token);
-  //       const emailOrUsername = decoded.email || decoded.username;
-  //       setUserEmail(emailOrUsername);
-  //       console.log("Decoded user email/username:", emailOrUsername); // ✅ This will now show
-  //     } catch (error) {
-  //       console.error("Invalid token:", error);
-  //     }
-  //   }
-  // }, []);
-
-  const handleLogout = () => {
-    logout();
-    router.push("/authentication/login"); // or wherever you want to send user after logout
+  const handleLogout = async () => {
+    try {
+      setIsSigningOut(true);
+      await deleteCookies("token");
+      localStorage.removeItem("user");
+      router.push("/");
+    } catch (err) {
+      console.error("Logout failed", err);
+    } finally {
+      setIsSigningOut(false);
+    }
   };
+
+  // Load user from localStorage first
+  useEffect(() => {
+    const stored = localStorage.getItem("user");
+    if (stored) setUser(JSON.parse(stored));
+  }, []);
+ interface User {
+  id: number;
+  username?: string;   // Optional because manual login may not have it
+  email?: string;      // Optional because manual login may not have it
+  firstname: string;
+  lastname?: string;
+  name?: string;
+  image?: string | null;
+}
+
+
+  // Fetch user info (Google or manual login)
+//  useEffect(() => {
+//   if (status === "loading") return;
+
+//   const fetchUser = async () => {
+//     try {
+//       // let userData: any = null;
+//         let userData: User | null = null; // ✅ type instead of any
+
+
+//       const stored = localStorage.getItem("user");
+//       const manualUser = stored ? JSON.parse(stored) : null;
+
+//       // ✅ Manual login has priority
+//       if (manualUser && !session?.user) {
+//         // Fetch latest DB info for manual login
+//         const res = await axios.get(`/api/my-profile/${manualUser.id}`);
+//         const dbUser = res.data;
+//         userData = {
+//           ...manualUser,
+//           firstname: dbUser.firstname || manualUser.firstname || "",
+//           lastname: dbUser.lastname || manualUser.lastname || "",
+//           name: `${dbUser.firstname || manualUser.firstname || ""} ${dbUser.lastname || manualUser.lastname || ""}`.trim(),
+//         };
+//       } 
+//       // ✅ Google session used only if no manual login
+//       else if (session?.user?.id) {
+//         const res = await axios.get(`/api/my-profile/${session.user.id}`);
+//         const dbUser = res.data;
+//         const firstname = dbUser.firstname?.trim() || session.user.name?.split(" ")[0] || "";
+//         const lastname = dbUser.lastname?.trim() || session.user.name?.split(" ").slice(1).join(" ") || "";
+//         userData = {
+//           id: dbUser.id,
+//           email: dbUser.email,
+//           firstname,
+//           lastname,
+//           name: `${firstname} ${lastname}`.trim(),
+//           image: session.user.image,
+//         };
+//       }
+
+//       if (userData) {
+//         setUser(userData);
+//         localStorage.setItem("user", JSON.stringify(userData));
+//       } else {
+//         router.push("/authentication/login");
+//       }
+//     } catch (err) {
+//       console.error("Failed to fetch user:", err);
+//       router.push("/authentication/login");
+//     }
+//   };
+
+//   fetchUser();
+// }, [session, status, router]);
+interface StoredUser {
+  id: number;
+  username: string;
+  email: string;
+  firstname: string;
+  lastname?: string;
+  name?: string;
+  image?: string;
+}
+
+interface DbUser {
+  id: number;
+  username?: string;
+  email: string;
+  firstname?: string;
+  lastname?: string;
+  image?: string | null;
+}
+useEffect(() => {
+    if (status === "loading") return;
+
+    const fetchUser = async () => {
+      try {
+        let userData: StoredUser | null = null;
+        const stored = localStorage.getItem("user");
+        const manualUser = stored ? JSON.parse(stored) : null;
+
+        if (manualUser && !session?.user) {
+          // const res = await axios.get<DbUser>(`/api/my-profile/${manualUser.id}`);
+          const res = await axios.get<DbUser>(
+  `/api/my-profile/${manualUser.id || manualUser.email}`
+);
+
+          const dbUser = res.data;
+
+          userData = {
+            ...manualUser,
+            username: dbUser.username || `user${dbUser.id}`,
+            firstname: dbUser.firstname || manualUser.firstname || "",
+            lastname: dbUser.lastname || manualUser.lastname || "",
+            name: `${dbUser.firstname || manualUser.firstname || ""} ${dbUser.lastname || manualUser.lastname || ""}`.trim(),
+            image: dbUser.image || undefined,
+          };
+        } else if (session?.user?.email) {
+          const userEmail = session.user.email!;
+          // const res = await axios.get<DbUser>(`/api/my-profile/${userEmail}`);
+          const res = await axios.get<DbUser>(
+  `/api/my-profile/${manualUser.id || manualUser.email}`
+);
+
+          const dbUser = res.data;
+
+          const firstname = dbUser.firstname || session.user.name?.split(" ")[0] || "";
+          const lastname = dbUser.lastname || session.user.name?.split(" ").slice(1).join(" ") || "";
+
+          userData = {
+            id: dbUser.id,
+            email: dbUser.email,
+            username: dbUser.username || userEmail.split("@")[0],
+            firstname,
+            lastname,
+            name: `${firstname} ${lastname}`.trim(),
+            image: session.user.image || dbUser.image || undefined,
+          };
+        }
+
+        if (userData) {
+          setUser(userData);
+          localStorage.setItem("user", JSON.stringify(userData));
+        } else {
+          router.push("/authentication/login");
+        }
+      } catch (err) {
+        console.error("Failed to fetch user:2", err);
+        router.push("/authentication/login");
+      }
+    };
+
+    fetchUser();
+  }, [session, status, router]);
+
+
   return (
-    <nav className="fixed top-0 w-full px-6 py-4 shadow-md bg-white dark:bg-gray-900 flex justify-between items-center">
-      <div className="text-xl font-bold text-gray-800 dark:text-white">
-        🌐 MyPlatform
-      </div>
-      {/* {userEmail && (
-        <div className="text-sm text-gray-700 dark:text-white mr-4">
-          Signed in as <strong>{userEmail}</strong>
-        </div>
-      )} */}
-      {userEmail ? (
+    <nav className="fixed top-0 w-full px-6 py-4 shadow-md bg-white dark:bg-gray-900 flex justify-between items-center z-[100]">
+      <div className="text-xl font-bold text-gray-800 dark:text-white">🌐 GrowUp</div>
+
+      {user ? (
         <div className="flex items-center gap-4">
           <div className="text-sm text-gray-700 dark:text-white mr-4">
-            Signed in as <strong>{userEmail}</strong>
+            Hi, <strong>{user.name || user.firstname || "User"}</strong>
           </div>
           <button
             onClick={handleLogout}
+            disabled={isSigningOut}
             className="px-3 py-1 text-sm text-white bg-red-600 rounded hover:bg-red-700 transition"
           >
             Logout
           </button>
         </div>
       ) : (
-        <div className="text-sm text-gray-700 dark:text-white mr-4">
-          Please login
-        </div>
+        <div className="text-sm text-gray-700 dark:text-white mr-4">Loading...</div>
       )}
 
-      <div className="relative flex" ref={dropdownRef}>
+      <div className="relative z-[9999] flex" ref={dropdownRef}>
+        <NotificationBell />
+        <ThemeToggleButton />
         <CreateGoalModal />
         <Link
           href="/dashboard/timeline"
           className="mr-3 text-blue-600 hover:text-blue-800 transition flex items-center"
-          aria-label="Facebook Messenger"
+          aria-label="Timeline"
           title="Timeline"
         >
           <MdViewTimeline className="text-2xl" />
@@ -257,11 +394,13 @@ export default function Navbar() {
         <Link
           href="/dashboard/"
           className="mr-3 text-blue-600 hover:text-blue-800 transition flex items-center"
-          aria-label="Facebook Messenger"
+          aria-label="Messenger"
           title="Messenger"
         >
           <FaFacebookMessenger className="text-2xl" />
         </Link>
+        <UserDropdown />
+
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="flex items-center gap-2 px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 text-sm text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 transition"
@@ -274,24 +413,12 @@ export default function Navbar() {
             stroke="currentColor"
             viewBox="0 0 24 24"
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M19 9l-7 7-7-7"
-            />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
           </svg>
         </button>
-        {/* <Link
-          href="/dashboard/"
-          className="ml-3 text-blue-600 hover:text-blue-800 transition flex items-center"
-          aria-label="Facebook Messenger"
-          title="Messenger"
-        >
-          <FaFacebookMessenger className="text-2xl" />
-        </Link> */}
+
         {isOpen && (
-          <div className="absolute right-0 mt-2 bg-white dark:bg-gray-800 shadow-lg rounded-lg z-20 w-44">
+          <div className="absolute right-0 mt-2 w-48 rounded-xl border border-gray-200 bg-white shadow-lg z-[10000]">
             {languages.map(({ code, label, Flag }) => (
               <button
                 key={code}

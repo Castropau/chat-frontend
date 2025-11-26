@@ -28,7 +28,7 @@ DEBUG = True
 
 # ALLOWED_HOSTS = ['192.168.0.112']
 # ALLOWED_HOSTS = ['*']
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '192.168.0.112']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '192.168.0.110']
 
 
 
@@ -103,7 +103,7 @@ WSGI_APPLICATION = 'messengerback.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'chat',  # Replace with your database name
+        'NAME': 'me',  # Replace with your database name
         'USER': 'paulo',  # Replace with your PostgreSQL username
         'PASSWORD': 'castro',  # Replace with your PostgreSQL password
         'HOST': 'localhost',  # or an IP address if it's hosted somewhere else

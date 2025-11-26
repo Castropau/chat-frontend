@@ -53,7 +53,7 @@
 // export default Navbar;
 "use client";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useRef, useState } from "react";
+import React, {  useState } from "react";
 
 const FlagEn = () => (
   <svg

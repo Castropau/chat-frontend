@@ -1,5 +1,5 @@
 import React from 'react';
-
+import Image from 'next/image';
 interface ChatHeaderProps {
   name: string;
   avatar: string;
@@ -9,10 +9,12 @@ interface ChatHeaderProps {
 const ChatHeader: React.FC<ChatHeaderProps> = ({ name, avatar, status = 'Online' }) => {
   return (
     <div className="flex items-center gap-3 px-4 py-3 border-b border-gray-200 bg-white shadow-sm">
-      <img
+      <Image
         src={avatar}
         alt={name}
         className="w-10 h-10 rounded-full object-cover"
+        width={40}
+        height={40}
       />
       <div>
         <h2 className="text-sm font-medium text-gray-900">{name}</h2>

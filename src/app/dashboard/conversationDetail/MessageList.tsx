@@ -13,7 +13,7 @@ const MessageList: React.FC = () => {
     if (containerRef.current) {
       containerRef.current.scrollTop = containerRef.current.scrollHeight;
     }
-  }, [messages]);
+  }, []);
 
   return (
     <div
