@@ -91,7 +91,7 @@ export function initSocket(socketUrl?: string) {
     socketUrl ||
     process.env.NEXT_PUBLIC_SOCKET_URL ||  // Use the environment variable
     (process.env.NODE_ENV === "production"  // Use production URL if in production
-      ? "https://growup-9psm.onrender.com"
+      ? "wss://growup-9psm.onrender.com"
       : "ws://localhost:4000");  // Use localhost in development
   // const url = socketUrl || process.env.NEXT_PUBLIC_SOCKET_URL || 'wss://growup-9psm.onrender.com';  // Production URL
 
@@ -100,7 +100,9 @@ export function initSocket(socketUrl?: string) {
   
   if (!socket) {
     socket = io(url, {
-      transports: ['websocket'],
+      // transports: ['websocket'],
+      transports: ["websocket", "polling"],  // Allow both WebSocket and fallback polling
+
       reconnectionAttempts: 5,
     });
   }
