@@ -178,61 +178,6 @@ export interface SendMessageResponse {
 }
 
 // ----- API Route -----
-// export async function POST(req: Request): Promise<NextResponse> {
-//   const socketUrl = process.env.SOCKET_URL;
-//   try {
-//     const body: SendMessageRequest = await req.json();
-//     const { senderId, receiverId, content } = body;
-
-//     if (!senderId || !receiverId || !content) {
-//       return NextResponse.json({ error: "Missing fields" }, { status: 400 });
-//     }
-
-//     const pool = getPool();
-
-//     // Insert message into database
-//     const [result] = await pool.query<ResultSetHeader>(
-//       "INSERT INTO messages (sender_id, receiver_id, content) VALUES (?, ?, ?)",
-//       [senderId, receiverId, content]
-//     );
-
-//     const messageId = result.insertId;
-
-//     // Fetch sender info (username + avatar)
-//     const [userRows] = await pool.query<UserRow[] & RowDataPacket[]>(
-//       "SELECT username, image AS avatar FROM users WHERE id = ?",
-//       [senderId]
-//     );
-
-//     const sender = userRows[0];
-
-//     const message: SendMessageResponse = {
-//         // ok: true,   
-//       id: messageId.toString(),
-//       senderId,
-//       receiverId,
-//       senderName: "You", // display as "You" for sender
-//       avatar: sender?.avatar || null,
-//       content,
-//       created_at: new Date(),
-//     };
-
-//     // Optional: notify your socket server
-//     // await fetch("http://localhost:4000/sendMessage", {
-//     await fetch(`${socketUrl}/sendMessage`, {
-//       method: "POST",
-//       headers: { "Content-Type": "application/json" },
-//       body: JSON.stringify(message),
-//     });
-
-//     return NextResponse.json({ ok: true, ...message });
-//   } catch (error: unknown) {
-//     console.error("POST /api/messages/send error:", error);
-//     const message =
-//       error instanceof Error ? error.message : "Internal server error";
-//     return NextResponse.json({ error: message }, { status: 500 });
-//   }
-// }
 export async function POST(req: Request): Promise<NextResponse> {
   const socketUrl = process.env.SOCKET_URL;
   try {
@@ -262,6 +207,7 @@ export async function POST(req: Request): Promise<NextResponse> {
     const sender = userRows[0];
 
     const message: SendMessageResponse = {
+        // ok: true,   
       id: messageId.toString(),
       senderId,
       receiverId,
@@ -271,16 +217,13 @@ export async function POST(req: Request): Promise<NextResponse> {
       created_at: new Date(),
     };
 
-    // Notify the socket server (only log errors if this fails)
-    try {
-      await fetch(`${socketUrl}/sendMessage`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(message),
-      });
-    } catch (socketError) {
-      console.error("Failed to notify socket server:", socketError);
-    }
+    // Optional: notify your socket server
+    // await fetch("http://localhost:4000/sendMessage", {
+    await fetch(`${socketUrl}/sendMessage`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(message),
+    });
 
     return NextResponse.json({ ok: true, ...message });
   } catch (error: unknown) {
