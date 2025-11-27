@@ -8,9 +8,17 @@ const app = express();
 app.use(express.json());
 
 const server = http.createServer(app);
+// const io = new IOServer(server, {
+//   cors: { origin: "*", methods: ["GET", "POST"], credentials: true },
+// });
 const io = new IOServer(server, {
-  cors: { origin: "*", methods: ["GET", "POST"], credentials: true },
+  cors: {
+    origin: "https://growup-9psm.onrender.com",  // Allow your frontend domain
+    methods: ["GET", "POST"],
+    credentials: true,
+  }
 });
+
 interface UnsendMessagePayload {
   id: string;
   senderId: string;

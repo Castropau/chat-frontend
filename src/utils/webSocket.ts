@@ -46,12 +46,27 @@ import { io, Socket } from "socket.io-client";
 
 let socket: Socket | null = null;
 
-export function initSocket(url: string) {
+// export function initSocket(url: string) {
+//   if (!socket) {
+//     socket = io(url, { transports: ["websocket"], reconnectionAttempts: 5 });
+//   }
+//   return socket;
+// }
+export function initSocket() {
+  // Get the appropriate socket URL depending on the environment
+  const socketUrl = process.env.NODE_ENV === 'production' 
+    ? 'wss://growup-9psm.onrender.com'  // Production URL
+    : 'ws://localhost:4000';  // Local development URL
+  
   if (!socket) {
-    socket = io(url, { transports: ["websocket"], reconnectionAttempts: 5 });
+    socket = io(socketUrl, {
+      transports: ['websocket'],   // Use WebSocket transport
+      reconnectionAttempts: 5,     // Set reconnection attempts
+    });
   }
   return socket;
 }
+
 export function getSocket() {
   return socket;
 }
