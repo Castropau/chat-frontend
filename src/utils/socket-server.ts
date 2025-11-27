@@ -4,7 +4,7 @@ import http from "http";
 import { Server as IOServer, Socket } from "socket.io";
 
 // const PORT = 4000;
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 10000;
 const app = express();
 app.use(express.json());
 
