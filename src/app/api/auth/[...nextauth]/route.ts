@@ -690,7 +690,7 @@ import { ResultSetHeader, RowDataPacket } from "mysql2/promise";
  interface InsertResult extends ResultSetHeader {
   insertId: number;
 }
-const socketUrl = process.env.SOCKET_URL;
+// const socketUrl = process.env.SOCKET_URL;
 
 const handler = NextAuth({
   providers: [
@@ -749,6 +749,7 @@ const handler = NextAuth({
 
         // Notify socket server
         // await axios.post("http://localhost:4000/online-status", {
+        const socketUrl = process.env.SOCKET_URL;
           await axios.post(`${socketUrl}/online-status`, {
           userId,
           online: 1,
