@@ -412,6 +412,7 @@ export default function LoginPage() {
 
 const socketUrl = process.env.SOCKET_URL;
     // const socket = initSocket("http://localhost:4000");
+    
     const socket = initSocket(socketUrl!);
 
   // ✅ AUTO REDIRECT IF ALREADY LOGGED IN (NO refresh needed)
