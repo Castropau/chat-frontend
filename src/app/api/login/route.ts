@@ -69,7 +69,7 @@ import { cookies } from "next/headers";
 import crypto from "crypto";
 import { getPool } from "@/lib/database/db";
 import axios from "axios";
-const socketUrl = process.env.SOCKET_URL;
+
 export async function POST(request: Request) {
   try {
     const { email, password } = await request.json();
@@ -120,6 +120,7 @@ export async function POST(request: Request) {
     );
 
     //  await axios.post("http://localhost:4000/online-status", {
+    const socketUrl = process.env.SOCKET_URL;
       await axios.post(`${socketUrl}/online-status`, {
       userId: user.id,
       online: 1,
