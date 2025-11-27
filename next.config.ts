@@ -8,7 +8,8 @@ const nextConfig: NextConfig = {
   },
 
   env: {
-    baseUrl: 'http://192.168.0.122:8000'
+    baseUrl: 'http://192.168.0.122:8000',
+    NEXT_PUBLIC_SOCKET_URL: 'https://growup-9psm.onrender.com',
   }
 };
 
