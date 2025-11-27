@@ -87,7 +87,9 @@ export function initSocket(socketUrl?: string) {
   // const url = socketUrl || process.env.NEXT_PUBLIC_SOCKET_URL || (process.env.NODE_ENV === 'production'
   //   ? 'wss://growup-9psm.onrender.com'  // Production URL
   //   : 'ws://localhost:4000');  // Local development URL
-    const url = socketUrl || process.env.NEXT_PUBLIC_SOCKET_URL || 'wss://growup-9psm.onrender.com:4000';  // Production URL
+  const url = socketUrl || process.env.NEXT_PUBLIC_SOCKET_URL || 'wss://growup-9psm.onrender.com:4000';  // Production URL
+
+    // const url = socketUrl || process.env.NEXT_PUBLIC_SOCKET_URL || 'wss://growup-9psm.onrender.com:4000';  // Production URL
 
   
   if (!socket) {

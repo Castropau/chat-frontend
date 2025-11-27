@@ -14,9 +14,9 @@ const server = http.createServer(app);
 // });
 const io = new IOServer(server, {
   cors: {
-    // origin: "https://growup-9psm.onrender.com", 
+    origin: "https://growup-9psm.onrender.com", 
      // Allow your frontend domain
-    origin: '*',  // Allow all origins, or specify your frontend domain 
+    // origin: '*',  // Allow all origins, or specify your frontend domain 
     methods: ["GET", "POST"],
     credentials: true,
   }
