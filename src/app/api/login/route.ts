@@ -120,8 +120,8 @@ export async function POST(request: Request) {
     );
 
     //  await axios.post("http://localhost:4000/online-status", {
-    // const socketUrl = process.env.SOCKET_URL;
-      await axios.post(`/online-status`, {
+    const socketUrl = process.env.SOCKET_URL;
+      await axios.post(`${socketUrl}/online-status`, {
       userId: user.id,
       online: 1,
     });
