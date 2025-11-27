@@ -105,6 +105,19 @@ export function initSocket(socketUrl?: string) {
 
       reconnectionAttempts: 5,
     });
+    socket.on("connect", () => {
+      console.log("Connected to WebSocket server");
+    });
+
+    socket.on("connect_error", (err) => {
+      console.error("Connection failed:", err);
+    });
+
+    socket.on("disconnect", (reason) => {
+      console.log(`Disconnected from server: ${reason}`);
+    });
+
+
   }
   return socket;
 }
