@@ -66,11 +66,25 @@ let socket: Socket | null = null;
 //   }
 //   return socket;
 // }
+// export function initSocket(socketUrl?: string) {
+//   // Use the provided URL or fallback to environment-based logic
+//   // const url = socketUrl || (process.env.NODE_ENV === 'production' 
+//     const url = socketUrl || process.env.NEXT_PUBLIC_SOCKET_URL || (process.env.NODE_ENV === 'production'
+
+//     ? 'wss://growup-9psm.onrender.com'  // Production URL
+//     : 'ws://localhost:4000');  // Local development URL
+  
+//   if (!socket) {
+//     socket = io(url, {
+//       transports: ['websocket'],
+//       reconnectionAttempts: 5,
+//     });
+//   }
+//   return socket;
+// }
 export function initSocket(socketUrl?: string) {
   // Use the provided URL or fallback to environment-based logic
-  // const url = socketUrl || (process.env.NODE_ENV === 'production' 
-    const url = socketUrl || process.env.NEXT_PUBLIC_SOCKET_URL || (process.env.NODE_ENV === 'production'
-
+  const url = socketUrl || process.env.NEXT_PUBLIC_SOCKET_URL || (process.env.NODE_ENV === 'production'
     ? 'wss://growup-9psm.onrender.com'  // Production URL
     : 'ws://localhost:4000');  // Local development URL
   
@@ -82,6 +96,7 @@ export function initSocket(socketUrl?: string) {
   }
   return socket;
 }
+
 
 
 export function getSocket() {
