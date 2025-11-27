@@ -21,7 +21,7 @@ const io = new IOServer(server, {
     credentials: true,
   }
 });
-
+console.log("🚀 Starting Socket Server...");
 interface UnsendMessagePayload {
   id: string;
   senderId: string;
