@@ -693,6 +693,7 @@ import { ResultSetHeader, RowDataPacket } from "mysql2/promise";
 // const socketUrl = process.env.SOCKET_URL;
 
 const handler = NextAuth({
+   debug: true, // Add this line
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
