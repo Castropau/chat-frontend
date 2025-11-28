@@ -410,7 +410,7 @@ export default function LoginPage() {
   const [errorKey, setErrorKey] = useState<string | null>(null);
   const [googleLoading, setGoogleLoading] = useState(false);
 
-const socketUrl = process.env.SOCKET_URL;
+const socketUrl = process.env.NEXT_PUBLIC_SOCKET_URL;
     // const socket = initSocket("http://localhost:4000");
     
     const socket = initSocket(socketUrl!);
