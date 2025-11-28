@@ -16,7 +16,7 @@ interface Props {
   onSelectUser: (user: User) => void; 
 }
 
-const socketUrl = process.env.SOCKET_URL;
+// const socketUrl = process.env.SOCKET_URL;
 const ConversationList: React.FC<Props> = ({  onSelectUser }) => {
   const [users, setUsers] = useState<User[]>([]);
   const [search, setSearch] = useState("");
@@ -56,6 +56,7 @@ const ConversationList: React.FC<Props> = ({  onSelectUser }) => {
   // Socket listener for realtime online status
   useEffect(() => {
     // const socket = initSocket("http://localhost:4000");
+    const socketUrl = process.env.NEXT_PUBLIC_SOCKET_URL;
     const socket = initSocket(socketUrl!);
 
     socket.on("onlineStatus:update", ({ userId, online }: { userId: number; online: number }) => {
