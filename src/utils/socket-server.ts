@@ -3,25 +3,28 @@ import express from "express";
 import http from "http";
 import { Server as IOServer, Socket } from "socket.io";
 
-// const PORT = 4000;
-const PORT = process.env.PORT || 10000;
+const PORT = 10000;
+
+ //  const PORT = process.env.PORT || 4000;
+//  const PORT = process.env.PORT || 4000;
+// const PORT = 5000;
 const app = express();
 app.use(express.json());
 
 const server = http.createServer(app);
-// const io = new IOServer(server, {
-//   cors: { origin: "*", methods: ["GET", "POST"], credentials: true },
-// });
 const io = new IOServer(server, {
-  cors: {
-    origin: "https://growup-9psm.onrender.com", 
-     // Allow your frontend domain
-    // origin: '*',  // Allow all origins, or specify your frontend domain 
-    methods: ["GET", "POST"],
-    credentials: true,
-  }
+  cors: { origin: "https://growup-9psm.onrender.com", methods: ["GET", "POST"], credentials: true },
 });
-console.log("🚀 Starting Socket Server...");
+// const io = new IOServer(server, {
+//   cors: {
+//     origin: "https://growup-9psm.onrender.com", 
+//      // Allow your frontend domain
+//     // origin: '*',  // Allow all origins, or specify your frontend domain 
+//     methods: ["GET", "POST"],
+//     credentials: true,
+//   }
+// });
+// console.log("🚀 Starting Socket Server...");
 interface UnsendMessagePayload {
   id: string;
   senderId: string;
