@@ -3,11 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "ts-node-dev --respawn --transpile-only src/utils/socket-server.ts",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "socket:dev": "ts-node-dev --respawn --transpile-only src/utils/socket-server.ts"
+    "lint": "next lint"
+    
   },
   "dependencies": {
     "@react-oauth/google": "^0.12.2",

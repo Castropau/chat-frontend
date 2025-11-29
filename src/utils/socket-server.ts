@@ -14,7 +14,7 @@ app.use(express.json());
 
 const server = http.createServer(app);
 const io = new IOServer(server, {
-  cors: { origin: ["https://growup-9psm.onrender.com"], methods: ["GET", "POST"], credentials: true },
+  cors: { origin: ["https://growup-9psm.onrender.com", "http://localhost:3000"], methods: ["GET", "POST"], credentials: true },
 });
 // const io = new IOServer(server, {
 //   cors: {
