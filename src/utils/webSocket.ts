@@ -61,7 +61,7 @@ let socket: Socket | null = null;
 // }
 export function initSocket(url?: string) {
   if (!socket) {
-    const SOCKET_URL = url || "growup-9psm.onrender.com"; // Ensure your URL is correct
+    const SOCKET_URL = url || "/"; // Ensure your URL is correct
     socket = io(SOCKET_URL, {
       transports: ["websocket"], // Using WebSocket transport
       reconnectionAttempts: 5,   // Retry connection attempts
