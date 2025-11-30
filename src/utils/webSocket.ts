@@ -52,26 +52,13 @@ let socket: Socket | null = null;
 //   }
 //   return socket;
 // }
-// export function initSocket(url?: string) {
-//   if (!socket) {
-//     const SOCKET_URL = url || process.env.NEXT_PUBLIC_SOCKET_URL!;
-//     socket = io(SOCKET_URL, { transports: ["websocket"], reconnectionAttempts: 5 });
-//   }
-//   return socket;
-// }
 export function initSocket(url?: string) {
   if (!socket) {
     const SOCKET_URL = url || process.env.NEXT_PUBLIC_SOCKET_URL!;
-    socket = io(SOCKET_URL, {
-      path: "/api/socket", // Ensure path matches the one in your server
-      transports: ["websocket"],
-      reconnectionAttempts: 5,
-      withCredentials: true,
-    });
+    socket = io(SOCKET_URL, { transports: ["websocket"], reconnectionAttempts: 5 });
   }
   return socket;
 }
-
 export function getSocket() {
   return socket;
 }
