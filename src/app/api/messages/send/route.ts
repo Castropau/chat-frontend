@@ -217,7 +217,7 @@ export async function POST(req: Request): Promise<NextResponse> {
     };
 
     // Optional: notify your socket server
-    const socketUrl = process.env.SOCKET_URL;
+    const socketUrl = process.env.SOCKET_URL || "https://growup-9psm.onrender.com";
     await fetch(`${socketUrl}/sendMessage`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
