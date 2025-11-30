@@ -59,10 +59,17 @@ export function initSocket(url?: string) {
   }
   return socket;
 }
-export function getSocket() {
+// export function getSocket() {
+//   return socket;
+// }
+export function getSocket(): Socket {
+  if (!socket) {
+    socket = io("/", {
+      path: "/api/socket"
+    });
+  }
   return socket;
 }
-
 export function closeSocket() {
   if (socket) {
     socket.disconnect();
