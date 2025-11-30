@@ -13,22 +13,9 @@ const app = express();
 app.use(express.json());
 
 const server = http.createServer(app);
-// const io = new IOServer(server, {
-//   cors: { 
-//     origin: ["https://growup-9psm.onrender.com"],
-//      methods: ["GET", "POST"],
-//       credentials: true },
-
-// });
 const io = new IOServer(server, {
-  cors: {
-    origin: ["https://growup-9psm.onrender.com", "https://growup-9psm.onrender.com/dashboard"],
-    methods: ["GET", "POST"],
-    credentials: true,
-  },
+  cors: { origin: ["https://growup-9psm.onrender.com"], methods: ["GET", "POST"], credentials: true },
 });
-
-
 // const io = new IOServer(server, {
 //   cors: {
 //     origin: "https://growup-9psm.onrender.com", 
