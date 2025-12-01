@@ -318,7 +318,7 @@ export default function ReactionStats({ postId }: { postId: number }) {
 //     // socket.emit("leave", { postId });
 //   };
 // }, [postId]);
-const socketUrl = process.env.SOCKET_URL;
+// const socketUrl = process.env.SOCKET_URL;
 useEffect(() => {
   let isMounted = true;
 
@@ -336,10 +336,10 @@ useEffect(() => {
   fetchInitial();
 
   // ⚙️ Always reuse the same socket connection
-  const SOCKET_URL =
+  const SOCKET_URLS =
     // process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:4000";
-     process.env.NEXT_PUBLIC_SOCKET_URL || socketUrl || "http://localhost:4000";
-  const socket = initSocket(SOCKET_URL);
+     process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:4000";
+  const socket = initSocket(SOCKET_URLS);
 
   // Join the room (if not already joined)
   socket.emit("join", { postId });

@@ -13,19 +13,9 @@ const app = express();
 app.use(express.json());
 
 const server = http.createServer(app);
-// const io = new IOServer(server, {
-//   cors: { origin: ["https://growup-9psm.onrender.com"], methods: ["GET", "POST"], credentials: true },
-// });
 const io = new IOServer(server, {
-  cors: {
-    origin: ["https://growup-9psm.onrender.com"],
-    methods: ["GET", "POST"],
-    credentials: true,
-  },
-  pingTimeout: 10000,  // Allow 10 seconds before timing out
-  pingInterval: 2500,  // Interval between ping checks
+  cors: { origin: ["https://growup-9psm.onrender.com"], methods: ["GET", "POST"], credentials: true },
 });
-
 // const io = new IOServer(server, {
 //   cors: {
 //     origin: "https://growup-9psm.onrender.com", 
