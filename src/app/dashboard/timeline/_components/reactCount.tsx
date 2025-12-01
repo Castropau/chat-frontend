@@ -338,7 +338,7 @@ useEffect(() => {
   // ⚙️ Always reuse the same socket connection
   const SOCKET_URLS =
     // process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:4000";
-     process.env.NEXT_PUBLIC_SOCKET_URL || "http://localhost:4000";
+     process.env.NEXT_PUBLIC_SOCKET_URL;
   const socket = initSocket(SOCKET_URLS);
 
   // Join the room (if not already joined)
