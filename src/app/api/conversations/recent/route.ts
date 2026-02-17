@@ -57,6 +57,8 @@ export async function GET(req: Request) {
         u.id, 
         u.username, 
         u.image,
+        u.firstname,
+        u.lastname,
         MAX(m.created_at) AS last_message
       FROM messages m
       JOIN users u ON (u.id = m.sender_id OR u.id = m.receiver_id)

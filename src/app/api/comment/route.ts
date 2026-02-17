@@ -330,10 +330,13 @@ export async function POST(req: Request) {
     // const insertId = result.insertId;
     // 2️⃣ Get commenter username
     const [userRows] = await pool.query<UserRow[]>(
-      "SELECT username, image AS userImage  FROM users WHERE id = ?",
+      "SELECT username, image AS userImage, firstname, lastname  FROM users WHERE id = ?",
       [userId]
     );
     const username = userRows.length > 0 ? userRows[0].username : "Anonymous";
+//     const firstname = userRows.length > 0 ? userRows[0].firstname : "";
+// const lastname = userRows.length > 0 ? userRows[0].lastname : "";
+
 
     // 3️⃣ Get post owner info
     const [postRows] = await pool.query<PostRow[]>(
@@ -402,6 +405,8 @@ await fetch(`${socketUrl}/broadcast`, {
         userRows.length > 0 && userRows[0].userImage
           ? userRows[0].userImage
           : "/default-avatar.png",
+       firstname: userRows[0]?.firstname ?? "",
+      lastname: userRows[0]?.lastname ?? "",
     },
     type: "comment",
   }),
@@ -433,7 +438,9 @@ export async function GET(req: Request) {
       `SELECT 
         c.id, c.comment, c.created_at, 
         u.id AS userId, u.username AS userName,
-        u.image AS userImage 
+        u.image AS userImage,
+        u.firstname,
+        u.lastname
       FROM comments c 
       JOIN users u ON c.user_id = u.id 
       WHERE c.post_id = ? 

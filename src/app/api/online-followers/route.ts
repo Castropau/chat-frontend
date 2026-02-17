@@ -5,7 +5,7 @@ export async function GET() {
   try {
     const pool = await getPool();
     const [rows] = await pool.query(
-      "SELECT id, username, image, online FROM users"
+      "SELECT id, username, image, online, firstname, lastname FROM users"
     );
     return NextResponse.json(rows);
   } catch (error) {

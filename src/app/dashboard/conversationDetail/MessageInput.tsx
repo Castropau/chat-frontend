@@ -249,22 +249,40 @@ const MessageInput: React.FC<Props> = ({ onSend, onTyping }) => {
   };
 
   return (
-    <div className="p-2 border-t border-gray-300 flex bg-white">
-      <input
-        type="text"
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-        onKeyDown={handleKeyDown}
-        placeholder="Type a message..."
-        className="flex-1 px-3 py-2 border border-gray-300 rounded-l focus:outline-none focus:ring-2 focus:ring-blue-500"
-      />
-      <button
-        onClick={handleSend}
-        className="px-4 bg-blue-500 text-white rounded-r hover:bg-blue-600"
-      >
-        Send
-      </button>
-    </div>
+    // <div className="p-2 border-t border-gray-300 flex bg-white">
+    //   <input
+    //     type="text"
+    //     value={message}
+    //     onChange={(e) => setMessage(e.target.value)}
+    //     onKeyDown={handleKeyDown}
+    //     placeholder="Type a message..."
+    //     className="flex-1 px-3 py-2 border border-gray-300 rounded-l focus:outline-none focus:ring-2 focus:ring-blue-500"
+    //   />
+    //   <button
+    //     onClick={handleSend}
+    //     className="px-4 bg-blue-500 text-white rounded-r hover:bg-blue-600"
+    //   >
+    //     Send
+    //   </button>
+    // </div>
+    <div className="p-2 border-t border-gray-300 dark:border-gray-600 flex bg-white dark:bg-gray-800">
+  <input
+    type="text"
+    value={message}
+    onChange={(e) => setMessage(e.target.value)}
+    onKeyDown={handleKeyDown}
+    placeholder="Type a message..."
+    className="flex-1 px-3 py-2 border border-gray-300 rounded-l focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+  />
+  <button
+    onClick={handleSend}
+    className="px-4 bg-blue-500 text-white rounded-r hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700"
+  >
+    Send
+  </button>
+</div>
+
+    
   );
 };
 

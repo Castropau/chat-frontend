@@ -9,6 +9,8 @@ export interface User {
   username: string;
   image?: string;
   online?: number;
+  firstname?: string;
+  lastname?: string;
 }
 
 interface Props {
@@ -95,18 +97,28 @@ const ConversationList: React.FC<Props> = ({  onSelectUser }) => {
       <UserProfile />
 
       {/* Search */}
-      <div className="p-2">
+      {/* <div className="p-2">
         <input
           type="text"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Search users..."
-          className="w-full px-3 py-2 rounded border border-gray-300"
+          className="w-full px-3 py-2 rounded border border-gray-300 "
         />
-      </div>
+      </div> */}
+      <div className="p-2 dark:bg-gray-800">
+  <input
+    type="text"
+    value={search}
+    onChange={(e) => setSearch(e.target.value)}
+    placeholder="Search users..."
+    className="w-full px-3 py-2 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+  />
+</div>
 
-      {/* Search results */}
-      {search.trim() && (
+
+    
+      {/* {search.trim() && (
         <div className="overflow-y-auto flex-1 p-2">
           {users.length > 0 ? (
             users.map((user) => (
@@ -124,7 +136,29 @@ const ConversationList: React.FC<Props> = ({  onSelectUser }) => {
             <div className="text-sm text-gray-500 p-2">No users found</div>
           )}
         </div>
-      )}
+      )} */}
+      {search.trim() && (
+  <div className="overflow-y-auto flex-1 p-2 bg-white dark:bg-gray-800 rounded-lg shadow-lg max-h-60">
+    {users.length > 0 ? (
+      users.map((user) => (
+        <ConversationItem
+          key={user.id}
+          id={user.id}
+          name={user.username}
+          // avatar={user.image || "https://i.pravatar.cc/40"}
+          avatar={user.image}
+          online={user.online}
+          onClick={() => onSelectUser(user)}
+          firstname={user.firstname}
+          lastname={user.lastname}
+        />
+      ))
+    ) : (
+      <div className="text-sm text-gray-500 dark:text-gray-400 p-2">No users found</div>
+    )}
+  </div>
+)}
+
 
       {/* Online Followers — FIXED */}
       <OnlineFollowers

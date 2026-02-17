@@ -44,6 +44,8 @@ import Link from "next/link";
   userId?: number;
   userName?: string;
   userImage?: string;
+   firstname?: string;  
+  lastname?: string;   
 }
 
   interface BackendCategory {
@@ -174,6 +176,8 @@ const socketUrl = process.env.SOCKET_URL;
     userId?: number;
     userName?: string;
     userImage?: string;
+      firstname?: string;
+    lastname?: string;
   }
   socket.on("reactions:update", ({ postId, payload }) => {
     if (!payload || !payload.comment) return;
@@ -186,6 +190,12 @@ const socketUrl = process.env.SOCKET_URL;
       userId: payload.userId ?? 0,
       userName: payload.userName ?? "Anonymous",
       userImage: payload.userImage ?? "/default-avatar.png", // ✅ important
+      firstname: payload.firstname || "",
+    lastname: payload.lastname || "",
+
+    // Fallback logic — only used by UI
+    
+     
 
     };
 
@@ -541,7 +551,7 @@ setCategories(mapped);
     return (
       <div className="min-h-screen flex dark:bg-gray-900">
     
-        <div className="fixed left-0 top-19 h-full w-1/4 bg-gray-100 p-6 overflow-y-auto shadow-lg dark:bg-gray-800">
+        {/* <div className="fixed left-0 top-19 h-full w-1/4 bg-gray-100 p-6 overflow-y-auto shadow-lg dark:bg-gray-800">
     <h3 className="font-semibold text-xl mb-4 text-gray-900 dark:text-gray-100">Settings</h3>
     <div className="space-y-4">
       <button className="block w-full text-left bg-blue-500 text-white p-3 rounded-md hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-500">
@@ -554,7 +564,7 @@ setCategories(mapped);
         Update Profile
       </button>
     </div>
-  </div>
+  </div> */}
 
 
       
@@ -806,12 +816,14 @@ setCategories(mapped);
       ))
     )}
   </div>
- <div className="fixed right-0 top-19 h-full w-1/4 bg-gray-100 p-6 overflow-y-auto shadow-lg z-30 dark:bg-gray-800">
+ {/* <div className="fixed right-0 top-19 h-full w-1/4 bg-gray-100 p-6 overflow-y-auto shadow-lg z-30 dark:bg-gray-800">
   <h3 className="font-semibold text-xl mb-4 text-gray-900 dark:text-gray-100">
     Online Followers
   </h3>
-  <div className="space-y-4">{/* list here */}</div>
-</div>
+  <div className="space-y-4">
+
+  </div>
+</div> */}
 
 
 

@@ -172,20 +172,35 @@ const EditProfilePage = () => {
   }
 
   return (
-    <div className="w-full h-screen bg-white dark:bg-gray-800 p-8 flex justify-center items-center">
-      <div className="bg-white p-8 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 dark:bg-gray-800 w-full max-w-lg">
+    <div className="w-full min-h-screen bg-white dark:bg-gray-800 flex justify-center pt-25">
+  <div className="bg-white p-8 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 dark:bg-gray-800 w-full max-w-lg">
         <h2 className="text-3xl font-semibold text-center mb-6 text-gray-900 dark:text-white"> Edit Profile</h2>
 
         {/* Profile Image */}
         <div className="flex justify-center mb-6">
           <label htmlFor="profileImage" className="cursor-pointer">
-            <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-blue-500">
+            {/* <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-blue-500">
               <img
                 src={imagePreview || user.image || "/default-avatar.png"}
                 alt="Profile Image"
                 className="w-full h-full object-cover"
               />
-            </div>
+            </div> */}
+            <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-blue-500 bg-blue-500 flex items-center justify-center">
+  {imagePreview || (user.image && user.image.trim() !== "") ? (
+    <img
+      src={imagePreview || user.image}
+      alt={user.firstname || user.username || "User"}
+      className="w-full h-full object-cover"
+    />
+  ) : (
+    <span className="text-white font-bold text-4xl leading-none">
+      {(user.firstname?.[0] || "U").toUpperCase()}
+      {(user.lastname?.[0] || "").toUpperCase()}
+    </span>
+  )}
+</div>
+
             <input
               type="file"
               id="profileImage"

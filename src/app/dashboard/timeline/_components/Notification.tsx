@@ -389,7 +389,7 @@ export default function NotificationBell() {
   const router = useRouter();
   const routerRef = useRef(router);
   routerRef.current = router;
-const socketUrl = process.env.SOCKET_URL;
+const socketUrl = process.env.NEXT_PUBLIC_SOCKET_URL;
   // Socket initialization
   useEffect(() => {
     // if (!socket) socket = io("http://localhost:4000", 
@@ -482,13 +482,29 @@ const socketUrl = process.env.SOCKET_URL;
     );
   };
 
+  // const handleNotificationClick = async (notif: Notification) => {
+  //   await markAsRead(notif.id);
+  //   if ((notif.type === "reaction" || notif.type === "comment") && notif.post_id) {
+  //     const hash = hashId(notif.post_id);
+  //     router.push(`/dashboard/posted/${hash}`);
+  //   }
+  // };
   const handleNotificationClick = async (notif: Notification) => {
-    await markAsRead(notif.id);
-    if ((notif.type === "reaction" || notif.type === "comment") && notif.post_id) {
+  await markAsRead(notif.id);
+
+  if (notif.type === "reaction" || notif.type === "comment") {
+    if (notif.post_id) {
       const hash = hashId(notif.post_id);
       router.push(`/dashboard/posted/${hash}`);
     }
-  };
+  } else if (notif.type === "follow") {
+    // Redirect to follower's profile using their username (actorName)
+    if (notif.actorName) {
+      router.push(`/dashboard/profile/${notif.actorName}`);
+    }
+  }
+};
+
 
   const unreadCount = notifications.filter((n) => !n.is_read).length;
   const toggleDropdown = () => setIsOpen((p) => !p);

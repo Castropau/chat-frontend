@@ -89,6 +89,7 @@ export interface UserResponse {
   lastname: string;
   email: string;
   username: string;
+  profile_image: string;
 }
 
 export interface ApiError {
@@ -111,7 +112,7 @@ export async function GET(
     const pool = getPool();
 
     const [rows] = await pool.execute<UserRow[] & RowDataPacket[]>(
-      "SELECT id, firstname, lastname, email, username FROM users WHERE username = ?",
+      "SELECT id, firstname, lastname, email, username, image AS profile_image FROM users WHERE username = ?",
       [username]
     );
 
@@ -126,6 +127,7 @@ export async function GET(
       lastname: rows[0].lastname || "",
       email: rows[0].email,
       username: rows[0].username,
+      profile_image: rows[0].profile_image,
     };
 
     return NextResponse.json({ user }, { status: 200 });

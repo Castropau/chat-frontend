@@ -45,32 +45,43 @@ const UserProfile: React.FC = () => {
 
   if (loading || !user) {
     return (
-      <div className="flex items-center p-4 border-b border-gray-200 bg-white">
+      <div className="flex items-center p-4 border-b border-gray-200 bg-white dark:bg-gray-800 dark:border-gray-700 gap-3">
         <div className="w-10 h-10 rounded-full bg-gray-300 mr-3" />
         <div>
-          <h2 className="text-sm font-medium text-gray-900">Loading...</h2>
+          <h2 className="text-sm font-medium text-gray-900 dark:text-white">Loading...</h2>
         </div>
       </div>
     );
   }
 
-  return (
-    <div className="flex items-center p-4 border-b border-gray-200 bg-white">
+return (
+  <div className="flex items-center p-4 border-b border-gray-200 bg-white dark:bg-gray-800 dark:border-gray-700 gap-3">
+    {/* Avatar */}
+    {user.image ? (
       <Image
-        src={user.image || "https://via.placeholder.com/40"}
-        alt={user.firstname || "User"}
-        className="w-10 h-10 rounded-full object-cover mr-3"
         width={40}
         height={40}
+        src={user.image}
+        alt={user.username}
+        className="w-10 h-10 rounded-full object-cover"
       />
-      <div>
-        <h2 className="text-sm font-medium text-gray-900">
-          {user.firstname} {user.lastname || ""}
-        </h2>
-        <p className="text-xs text-gray-600">{user.username}</p>
+    ) : (
+      <div className="w-10 h-10 rounded-full flex items-center justify-center bg-gray-400 dark:bg-gray-600 text-white font-bold text-sm">
+        {`${user.firstname?.[0]?.toUpperCase() || "U"}${user.lastname?.[0]?.toUpperCase() || ""}`}
       </div>
+    )}
+
+    {/* User info */}
+    <div className="flex flex-col">
+      <h2 className="text-sm font-medium text-gray-900 dark:text-gray-100">
+        {user.firstname || "Unknown"} {user.lastname || ""}
+      </h2>
+      <p className="text-xs text-gray-600 dark:text-gray-400">{user.username || "No username"}</p>
     </div>
-  );
+  </div>
+);
+
+
 };
 
 export default UserProfile;

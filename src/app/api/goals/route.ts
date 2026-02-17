@@ -72,9 +72,11 @@ export async function GET(req: Request): Promise<NextResponse> {
         g.title,
         g.post_image,
         u.firstname,
-        u.lastname
+        u.lastname,
+        c.category_name
       FROM goals g
       JOIN users u ON g.user_id = u.id
+      JOIN categories c ON g.category = c.category_id
     `;
     const params: (string | number)[] = [];
 
@@ -93,6 +95,7 @@ export async function GET(req: Request): Promise<NextResponse> {
       postImage: row.post_image,
       firstname: row.firstname,
       lastname: row.lastname,
+      category_name: row.category_name,
     }));
 
     return NextResponse.json({ goals });

@@ -90,6 +90,8 @@ interface User {
   username: string;
   image?: string;
   online?: number;
+  firstname?: string;
+  lastname?: string;
 }
 
 interface Props {
@@ -144,42 +146,102 @@ const OnlineFollowers: React.FC<Props> = ({ onSelectUser }) => {
   }, []);
 
   return (
-    <div className="flex-1 overflow-y-auto p-2">
-      <h4 className="text-sm font-semibold mb-2">Online users</h4>
+//     <div className="flex-1 overflow-y-auto p-2">
+//       <h4 className="text-sm font-semibold mb-2">Online users</h4>
 
-      {onlineFollowers.length ? (
-        <div>
-          {onlineFollowers.map((user) => (
-            <div
-              key={user.id}
-              className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100 cursor-pointer"
-              onClick={() => onSelectUser(user)}
-            >
-              <Image
-                src={user.image || "https://i.pravatar.cc/40"}
-                className="w-10 h-10 rounded-full object-cover"
-                alt={user.username}
-                width={40}
-                height={40}
-              />
+//       {onlineFollowers.length ? (
+//         <div>
+//           {onlineFollowers.map((user) => (
+//             <div
+//               key={user.id}
+//               className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100 cursor-pointer"
+//               onClick={() => onSelectUser(user)}
+//             >
+//               {/* <Image
+//                 src={user.image || "https://i.pravatar.cc/40"}
+//                 className="w-10 h-10 rounded-full object-cover"
+//                 alt={user.username}
+//                 width={40}
+//                 height={40}
+//               /> */}
+//                {user.image ? (
+//   <Image
+//     width={40}
+//     height={40}
+//     src={user.image}
+//     alt={user.username}
+//     className="w-10 h-10 rounded-full object-cover"
+//   />
+// ) : (
+//   <div className="w-10 h-10 rounded-full flex items-center justify-center bg-gray-400 text-white font-bold">
+//     {`${user.firstname?.[0]?.toUpperCase() || "U"}${user.lastname?.[0]?.toUpperCase() || ""}`}
+//   </div>
+// )}
 
-              <div className="flex-1 flex items-center gap-2">
-                <p className="font-medium text-gray-900">{user.username}</p>
 
-                {/* Online status indicator */}
-                <span
-                  className={`w-3 h-3 rounded-full ${
-                    user.online === 1 ? "bg-blue-500" : "bg-red-500"
-                  }`}
-                />
-              </div>
+//               <div className="flex-1 flex items-center gap-2">
+//                 <p className="font-medium text-gray-900">{user.username}</p>
+
+//                 {/* Online status indicator */}
+//                 <span
+//                   className={`w-3 h-3 rounded-full ${
+//                     user.online === 1 ? "bg-blue-500" : "bg-red-500"
+//                   }`}
+//                 />
+//               </div>
+//             </div>
+//           ))}
+//         </div>
+//       ) : (
+//         <p className="text-sm text-gray-500">No online</p>
+//       )}
+//     </div>
+<div className="flex-1 overflow-y-auto p-2 dark:bg-gray-800">
+  <h4 className="text-sm font-semibold mb-2 text-gray-900 dark:text-gray-100">
+    Online users
+  </h4>
+
+  {onlineFollowers.length ? (
+    <div>
+      {onlineFollowers.map((user) => (
+        <div
+          key={user.id}
+          className="flex items-center gap-3 px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+          onClick={() => onSelectUser(user)}
+        >
+          {/* User Avatar */}
+          {user.image ? (
+            <Image
+              width={40}
+              height={40}
+              src={user.image}
+              alt={user.username}
+              className="w-10 h-10 rounded-full object-cover"
+            />
+          ) : (
+            <div className="w-10 h-10 rounded-full flex items-center justify-center bg-gray-400 text-white font-bold">
+              {`${user.firstname?.[0]?.toUpperCase() || "U"}${user.lastname?.[0]?.toUpperCase() || ""}`}
             </div>
-          ))}
+          )}
+
+          <div className="flex-1 flex items-center gap-2">
+            <p className="font-medium text-gray-900 dark:text-gray-100">{user.username}</p>
+
+            {/* Online status indicator */}
+            <span
+              className={`w-3 h-3 rounded-full ${
+                user.online === 1 ? "bg-blue-500" : "bg-red-500"
+              }`}
+            />
+          </div>
         </div>
-      ) : (
-        <p className="text-sm text-gray-500">No online</p>
-      )}
+      ))}
     </div>
+  ) : (
+    <p className="text-sm text-gray-500 dark:text-gray-400">No online</p>
+  )}
+</div>
+
   );
 };
 

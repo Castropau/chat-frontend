@@ -135,7 +135,7 @@ export async function GET(req: Request): Promise<NextResponse> {
   try {
     const [rows] = await pool.query<MessageRow[] & RowDataPacket[]>(
       `
-      SELECT m.id, m.content, m.sender_id, m.unsent, u.username AS senderName, u.image AS avatar
+      SELECT m.id, m.content, m.sender_id, m.unsent, u.username AS senderName, u.image AS avatar, u.firstname, u.lastname
       FROM messages m
       JOIN users u ON m.sender_id = u.id
       WHERE (m.sender_id = ? AND m.receiver_id = ?)
@@ -152,6 +152,8 @@ export async function GET(req: Request): Promise<NextResponse> {
       content: msg.unsent === 1 ? "This message was removed" : msg.content,
       isUnsent: msg.unsent === 1,
       avatar: msg.avatar,
+      firstname: msg.firstname, // Include firstname
+      lastname: msg.lastname,   // Include lastname
     }));
 
     return NextResponse.json(messages);

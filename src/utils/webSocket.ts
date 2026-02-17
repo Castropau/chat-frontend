@@ -87,9 +87,15 @@ export function initSocket(url?: string) {
 
   return socket;
 }
-export function getSocket() {
+// export function getSocket() {
+//   return socket;
+// }
+export const getSocket = (url: string) => {
+  if (!socket) {
+    socket = io(url, { autoConnect: true });
+  }
   return socket;
-}
+};
 
 export function closeSocket() {
   if (socket) {

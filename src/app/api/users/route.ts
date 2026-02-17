@@ -72,7 +72,7 @@ export async function GET(req: Request): Promise<NextResponse> {
   try {
     // Query matching users
     const [rows] = await pool.query<UserSearchResult[] & RowDataPacket[]>(
-      `SELECT id, username, image, online
+      `SELECT id, username, image, online, firstname, lastname
        FROM users
        WHERE username LIKE ?
        LIMIT 10`,

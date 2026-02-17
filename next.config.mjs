@@ -6,7 +6,12 @@ const withNextIntl = createNextIntlPlugin();
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['lh3.googleusercontent.com'], // add your external domains here
+    // domains: ['lh3.googleusercontent.com'], // add your external domains here
+    domains: [
+      "lh3.googleusercontent.com",
+      "i.pravatar.cc", 
+      "via.placeholder.com",  // ✔ correct
+    ],
   },
   
 };

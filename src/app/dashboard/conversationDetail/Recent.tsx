@@ -65,6 +65,8 @@ interface User {
   id: string;
   username: string;
   image?: string;
+  firstname?: string;
+  lastname?: string;
 }
 
 interface Props {
@@ -129,28 +131,63 @@ socket = io(socketUrl, { transports: ["websocket"] });
 
   return (
     // <div className="border-r border-gray-200 w-80 flex flex-col bg-gray-50">
-    <div className="border-r border-gray-200 flex flex-col bg-gray-50">
-      <div className="p-2 font-semibold border-b border-gray-200">Recent Chats</div>
+    // <div className="border-r border-gray-200 flex flex-col bg-gray-50">
+    //   <div className="p-2 font-semibold border-b border-gray-200">Recent Chats</div>
 
-      <div className="flex-1 overflow-y-auto">
-        {users.map((user) => (
-          <div
-            key={user.id}
-            className="flex items-center p-2 cursor-pointer hover:bg-gray-100"
-            onClick={() => onSelectUser(user)}
-          >
-            <Image
-              src={user.image || "https://i.pravatar.cc/40"}
-              alt={user.username}
-              className="w-10 h-10 rounded-full mr-3"
-              width={40}
-              height={40}
-            />
-            <span className="font-medium">{user.username}</span>
-          </div>
-        ))}
-      </div>
+    //   <div className="flex-1 overflow-y-auto">
+    //     {users.map((user) => (
+    //       <div
+    //         key={user.id}
+    //         className="flex items-center p-2 cursor-pointer hover:bg-gray-100"
+    //         onClick={() => onSelectUser(user)}
+    //       >
+    //         <Image
+    //           src={user.image || "https://i.pravatar.cc/40"}
+    //           alt={user.username}
+    //           className="w-10 h-10 rounded-full mr-3"
+    //           width={40}
+    //           height={40}
+    //         />
+    //         <span className="font-medium">{user.username}</span>
+    //       </div>
+    //     ))}
+    //   </div>
+    // </div>
+    <div className="border-r border-gray-200 dark:border-gray-700 flex flex-col bg-gray-50 dark:bg-gray-800">
+  <div className="p-2 font-semibold border-b border-gray-200 dark:border-gray-700 text-gray-900 dark:text-gray-100">
+    Recent Chats
+  </div>
+
+  <div className="flex-1 overflow-y-auto">
+  {users.map((user) => (
+    <div
+      key={user.id}
+      className="flex items-center p-3 cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 mb-2" // Increased padding and added margin-bottom
+      onClick={() => onSelectUser(user)}
+    >
+      {/* Avatar */}
+      {user.image ? (
+        <Image
+          width={40}
+          height={40}
+          src={user.image}
+          alt={user.username}
+          className="w-10 h-10 rounded-full object-cover mr-3" // Margin-right to add space between avatar and text
+        />
+      ) : (
+        <div className="w-10 h-10 rounded-full flex items-center justify-center bg-gray-400 text-white font-bold mr-3">
+          {`${user.firstname?.[0]?.toUpperCase() || "U"}${user.lastname?.[0]?.toUpperCase() || ""}`}
+        </div>
+      )}
+
+      {/* Username */}
+      <span className="font-medium text-gray-900 dark:text-gray-100">{user.username}</span>
     </div>
+  ))}
+</div>
+
+</div>
+
   );
 };
 

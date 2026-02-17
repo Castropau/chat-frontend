@@ -62,13 +62,14 @@ import Link from "next/link";
 import { FaFacebookMessenger } from "react-icons/fa";
 import CreateGoalModal from "../dashboard/timeline/_components/CreateGoalModal";
 import { MdViewTimeline } from "react-icons/md";
-import { deleteCookies } from "@/server/action/deleteCookies";
+// import { deleteCookies } from "@/server/action/deleteCookies";
 import { ThemeToggleButton } from "./ThemeToggleButton";
 // import Notification from "../dashboard/timeline/_components/Notification";
 import NotificationBell from "../dashboard/timeline/_components/Notification";
 import UserDropdown from "./UserDropdown";
 import axios from "axios";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 
 const FlagEn = () => (
   <svg
@@ -143,7 +144,7 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const [isSigningOut, setIsSigningOut] = useState(false);
+  // const [isSigningOut, setIsSigningOut] = useState(false);
 
   const { data: session, status } = useSession();
 
@@ -155,7 +156,7 @@ export default function Navbar() {
   //   name?: string;
   //   image?: string;
   // } | null>(null);
-  const [user, setUser] = useState<User | null>(null);
+  // const [user, setUser] = useState<User | null>(null);
 
 
 
@@ -192,33 +193,33 @@ export default function Navbar() {
 
   const currentLang = languages.find((l) => l.code === locale) || languages[0];
 
-  const handleLogout = async () => {
-    try {
-      setIsSigningOut(true);
-      await deleteCookies("token");
-      localStorage.removeItem("user");
-      router.push("/");
-    } catch (err) {
-      console.error("Logout failed", err);
-    } finally {
-      setIsSigningOut(false);
-    }
-  };
+  // const handleLogout = async () => {
+  //   try {
+  //     setIsSigningOut(true);
+  //     await deleteCookies("token");
+  //     localStorage.removeItem("user");
+  //     router.push("/");
+  //   } catch (err) {
+  //     console.error("Logout failed", err);
+  //   } finally {
+  //     setIsSigningOut(false);
+  //   }
+  // };
 
   // Load user from localStorage first
-  useEffect(() => {
-    const stored = localStorage.getItem("user");
-    if (stored) setUser(JSON.parse(stored));
-  }, []);
- interface User {
-  id: number;
-  username?: string;   // Optional because manual login may not have it
-  email?: string;      // Optional because manual login may not have it
-  firstname: string;
-  lastname?: string;
-  name?: string;
-  image?: string | null;
-}
+  // useEffect(() => {
+  //   const stored = localStorage.getItem("user");
+  //   if (stored) setUser(JSON.parse(stored));
+  // }, []);
+//  interface User {
+//   id: number;
+//   username?: string;   // Optional because manual login may not have it
+//   email?: string;      // Optional because manual login may not have it
+//   firstname: string;
+//   lastname?: string;
+//   name?: string;
+//   image?: string | null;
+// }
 
 
   // Fetch user info (Google or manual login)
@@ -343,7 +344,7 @@ useEffect(() => {
         }
 
         if (userData) {
-          setUser(userData);
+          // setUser(userData);
           localStorage.setItem("user", JSON.stringify(userData));
         } else {
           router.push("/authentication/login");
@@ -359,10 +360,23 @@ useEffect(() => {
 
 
   return (
-    <nav className="fixed top-0 w-full px-6 py-4 shadow-md bg-white dark:bg-gray-900 flex justify-between items-center z-[100]">
-      <div className="text-xl font-bold text-gray-800 dark:text-white">🌐 GrowUp</div>
+    <nav className="fixed top-0 w-full px-4 py-2 shadow-md bg-white dark:bg-gray-900 flex justify-between items-center z-[100]">
+      {/* <div className="text-xl font-bold text-gray-800 dark:text-white">🌐 GrowUp</div> */}
+      <div className="flex items-center gap-2">
+  <Image
+    src="/logo/IMG_1114.png" // path to your image in /public folder
+    alt="GrowUp Logo"
+    width={50}      // adjust size as needed
+    height={50}
+    className="object-contain"
+  />
+  <span className="text-xl font-bold text-gray-800 dark:text-white">
+    GrowUp
+  </span>
+</div>
+      
 
-      {user ? (
+      {/* {user ? (
         <div className="flex items-center gap-4">
           <div className="text-sm text-gray-700 dark:text-white mr-4">
             Hi, <strong>{user.name || user.firstname || "User"}</strong>
@@ -377,7 +391,7 @@ useEffect(() => {
         </div>
       ) : (
         <div className="text-sm text-gray-700 dark:text-white mr-4">Loading...</div>
-      )}
+      )} */}
 
       <div className="relative z-[9999] flex" ref={dropdownRef}>
         <NotificationBell />

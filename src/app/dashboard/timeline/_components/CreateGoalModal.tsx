@@ -1,44 +1,134 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
-const categories = ["Fitness", "Learning", "Health", "Finance", "Personal"];
+const categories = [
+  { id: 1, name: "Fitness" },
+  { id: 2, name: "Learning" },
+  { id: 3, name: "Health" },
+  { id: 4, name: "Finance" },
+  { id: 5, name: "Personal" },
+];
 const durations = ["Daily", "Weekly", "Custom"];
 const privacyOptions = ["Public", "Private", "Anonymous"];
 
 export default function CreateGoalModal() {
   const [isOpen, setIsOpen] = useState(false);
   const [title, setTitle] = useState("");
-  const [category, setCategory] = useState(categories[0]);
+  const [category, setCategory] = useState(categories[0].id);
   const [duration, setDuration] = useState(durations[0]);
   const [privacy, setPrivacy] = useState("Public");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [image, setImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+    const [userId, setUserId] = useState<number | null>(null);
+
+
+    const router = useRouter();
+   useEffect(() => {
+      // On component mount, check for user information in localStorage
+      const user = JSON.parse(localStorage.getItem("user") || "{}");
+      if (user?.id) {
+        setUserId(user.id); // Set userId if present in localStorage
+      }
+    }, []);
 
   const resetForm = () => {
     setTitle("");
-    setCategory(categories[0]);
+    setCategory(categories[0].id);
     setDuration(durations[0]);
     setPrivacy("Public");
     setError("");
+    setImage(null);
+    setImagePreview(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
-  const handleSubmit = async () => {
+  // const handleSubmit = async () => {
+  //   if (!title.trim()) {
+  //     setError("Title is required.");
+  //     return;
+  //   }
+  //   setIsSubmitting(true);
+  //   setError("");
+
+  //   setTimeout(() => {
+  //     console.log({ title, category, duration, privacy, image });
+  //     setIsSubmitting(false);
+  //     resetForm();
+  //     setIsOpen(false);
+  //     alert("Goal created successfully!");
+  //   }, 1000);
+  // };
+const handleSubmit = async () => {
     if (!title.trim()) {
       setError("Title is required.");
       return;
     }
 
-    setIsSubmitting(true);
-    setError("");
+    if (!userId) {
+      setError("User not authenticated.");
+      return;
+    }
 
-    setTimeout(() => {
-      console.log({ title, category, duration, privacy });
+    if (!image) {
+      setError("Image is required.");
+      return;
+    }
+
+    if (!category) {
+      setError("Category is required.");
+      return;
+    }
+
+    setIsSubmitting(true);
+    setError(""); // Reset previous error
+
+    try {
+      const formData = new FormData();
+      formData.append("userId", String(userId));
+      formData.append("title", title);
+      // formData.append("category", category); // Use category_id here
+      formData.append("category", String(category));
+
+      formData.append("duration", duration);
+      formData.append("privacy", privacy);
+      formData.append("image", image);
+
+      const response = await axios.post("/api/goal", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data", // Specify the content type
+        },
+      });
+
+      console.log(response.data); // For debugging, remove later
+
+      setIsSubmitting(false); // Set submission state to false
+      alert("Goal created successfully!"); // Provide feedback to the user
+      router.push("/dashboard/timeline"); // Redirect to dashboard after success
+    } catch (err) {
+      console.error("Error creating goal:", err);
       setIsSubmitting(false);
-      resetForm();
-      setIsOpen(false);
-      alert("Goal created successfully!");
-    }, 1000);
+      setError("Failed to create goal. Please try again."); // Set error message
+    }
+  };
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const selectedImage = e.target.files[0];
+      setImage(selectedImage);
+      setImagePreview(URL.createObjectURL(selectedImage));
+    }
+  };
+
+  const handleRemoveImage = () => {
+    setImage(null);
+    setImagePreview(null);
+    if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
   return (
@@ -46,22 +136,22 @@ export default function CreateGoalModal() {
       {/* Trigger Button */}
       <button
         onClick={() => setIsOpen(true)}
-        className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition mr-2 hover:cursor-pointer"
+        className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
       >
         + Create Goal
       </button>
 
       {/* Modal */}
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <div className="bg-white dark:bg-gray-900 rounded-xl shadow-lg p-6 w-full max-w-lg border border-gray-200 dark:border-gray-700 relative">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          <div className="bg-white dark:bg-gray-900 rounded-xl shadow-lg w-full max-w-lg border border-gray-200 dark:border-gray-700 relative max-h-[90vh] overflow-y-auto p-6">
             {/* Close Button */}
             <button
               onClick={() => {
                 setIsOpen(false);
                 resetForm();
               }}
-              className="absolute top-3 right-3 text-gray-500 hover:text-gray-700 dark:hover:text-white text-xl font-bold hover:cursor-pointer"
+              className="absolute top-3 right-3 text-gray-500 hover:text-gray-700 dark:hover:text-white text-xl font-bold"
               aria-label="Close"
               title="Close"
             >
@@ -93,11 +183,13 @@ export default function CreateGoalModal() {
               </label>
               <select
                 value={category}
-                onChange={(e) => setCategory(e.target.value)}
+                onChange={(e) => setCategory(Number(e.target.value))}
                 className="w-full px-4 py-2 rounded-lg border text-sm bg-gray-50 dark:bg-gray-800 dark:text-white border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
               >
                 {categories.map((cat) => (
-                  <option key={cat}>{cat}</option>
+                  <option key={cat.id} value={cat.id}>
+                    {cat.name}
+                  </option>
                 ))}
               </select>
             </div>
@@ -125,47 +217,6 @@ export default function CreateGoalModal() {
             </div>
 
             {/* Privacy */}
-            {/* <div className="mb-5">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Privacy
-              </label>
-              <div className="flex flex-wrap gap-3">
-                {privacyOptions.map((option) => (
-                  <label
-                    key={option}
-                    className="inline-flex items-center space-x-2 text-sm"
-                  >
-                    <input
-                      type="radio"
-                      name="privacy"
-                      value={option}
-                      checked={privacy === option}
-                      onChange={() => setPrivacy(option)}
-                      className="text-blue-600 focus:ring-blue-500"
-                    />
-                    <span className="text-gray-800 dark:text-gray-200">
-                      {option}
-                    </span>
-                  </label>
-                ))}
-              </div>
-            </div> */}
-            {/* <div className="mb-5">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Privacy
-              </label>
-              <select
-                value={privacy}
-                onChange={(e) => setPrivacy(e.target.value)}
-                className="w-full px-4 py-2 rounded-lg border text-sm bg-gray-50 dark:bg-gray-800 dark:text-white border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-              >
-                {privacyOptions.map((option) => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </select>
-            </div> */}
             <div className="mb-5">
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Privacy
@@ -181,12 +232,44 @@ export default function CreateGoalModal() {
                       value={option}
                       checked={privacy === option}
                       onChange={(e) => setPrivacy(e.target.value)}
-                      className="text-blue-600 focus:ring-blue-500 border-gray-300 dark:border-gray-600 dark:bg-gray-800"
+                      className="dark:text-white text-blue-600 focus:ring-blue-500 border-gray-300 dark:border-gray-600 dark:bg-gray-800"
                     />
-                    <span>{option}</span>
+                    <span className="dark:text-white">{option}</span>
                   </label>
                 ))}
               </div>
+            </div>
+
+            {/* Image Upload */}
+            <div className="mb-5">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Image
+              </label>
+              <input
+                ref={fileInputRef}
+                type="file"
+                onChange={handleImageChange}
+                accept="image/*"
+                className="w-full px-4 py-2 rounded-lg border text-sm bg-gray-50 dark:bg-gray-800 dark:text-white border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+              />
+              {image && (
+                <div className="mt-4 relative">
+                  <Image
+                    src={imagePreview || ""}
+                    alt="Image Preview"
+                    className="w-full h-auto rounded-lg shadow-md"
+                    width={400}
+                    height={300}
+                  />
+                  <button
+                    type="button"
+                    onClick={handleRemoveImage}
+                    className="absolute top-2 right-2 text-3xl text-white bg-black bg-opacity-50 rounded-full p-1"
+                  >
+                    &times;
+                  </button>
+                </div>
+              )}
             </div>
 
             {/* Error */}

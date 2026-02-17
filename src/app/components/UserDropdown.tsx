@@ -696,7 +696,7 @@ const handleLogout = async () => {
     
   />
 ) : (
-  `${user?.firstname?.[0] || "U"}${user?.lastname?.[0] || ""}`
+  `${user?.firstname?.[0]?.toUpperCase() || "U"}${user?.lastname?.[0].toUpperCase() || "U"}`
 )}
 
         </span>
@@ -724,7 +724,7 @@ const handleLogout = async () => {
 
           <ul className="flex flex-col gap-1 py-3">
             {[
-              { label: "Edit Profile", href: "/profile" },
+              { label: "Edit Profile", href: "/dashboard/edit_profile" },
               { label: "Profile", href: user ? `/dashboard/user_profile/${user.username}` : "/profile" },
               { label: "Change Password", href: "/dashboard/edit_profile/change-password" },
               { label: "Account Settings", href: "/settings" },

@@ -138,7 +138,7 @@ export async function GET(req: Request) {
         n.post_id
       FROM notifications n
       JOIN users a ON n.actor_id = a.id
-      JOIN goals g ON n.post_id = g.id
+      LEFT JOIN goals g ON n.post_id = g.id
       WHERE n.user_id = ?
       ORDER BY n.updated_at DESC
       `,

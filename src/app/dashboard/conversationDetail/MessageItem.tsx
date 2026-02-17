@@ -131,19 +131,107 @@
 
 // export default MessageItem;
 
+// "use client";
+
+// import React from "react";
+// import Image from "next/image";
+// interface Props {
+//   sender: string;      // "You" or other user's name
+//   content: string;
+//   avatar?: string;
+//   messageId?: string;
+//   isUnsent?: boolean;
+//   onUnsend?: (id: string) => void;
+  
+  
+// }
+
+// const MessageItem: React.FC<Props> = ({
+//   sender,
+//   content,
+//   avatar,
+//   messageId,
+//   isUnsent,
+//   onUnsend,
+// }) => {
+//   const isUser = sender === "You";
+
+//   return (
+//     <div
+//       className={`flex items-end ${isUser ? "justify-end" : "justify-start"} space-x-2`}
+//     >
+//       {/* Left avatar for other user */}
+//       {!isUser && (
+//         <Image
+//           width={32}
+//           height={32}
+//           src={avatar || "https://i.pravatar.cc/40"}
+//           alt={sender}
+//           className="w-8 h-8 rounded-full"
+//         />
+//       )}
+
+//       {/* Message bubble */}
+//    <div
+//   // className={`px-3 py-2 rounded-lg max-w-xs break-words relative ${
+//   //   isUnsent ? "line-through text-gray-400 italic" : ""
+//   // }`}
+//   //  className={`
+//   //         px-3 py-2 rounded-lg max-w-xs break-words relative
+//   //         ${isUser ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-900"}
+//   //         ${isUnsent ? "line-through text-gray-400 italic bg-gray-300" : ""}
+//   //       `}
+//    className={`px-3 py-2 rounded-lg max-w-xs break-words relative ${
+//     isUnsent
+//       ? "bg-gray-200 line-through text-gray-500 italic"
+//       : isUser
+//       ? "bg-blue-500 text-white"
+//       : "bg-gray-300 text-black"
+//   }`}
+// >
+//   {content}
+
+//   {/* Unsend button only for sender and only if not already unsent */}
+//   {isUser && !isUnsent && messageId && onUnsend && (
+//     <button
+//       onClick={() => onUnsend(messageId)}
+//       className="absolute -top-4 right-0 text-xs text-red-500 hover:underline"
+//     >
+//       Unsend
+//     </button>
+//   )}
+// </div>
+
+
+//       {/* Right avatar for current user */}
+//       {isUser && (
+//         <Image
+//           src={avatar || "https://i.pravatar.cc/40?u=you"}
+//           alt="You"
+//           className="w-8 h-8 rounded-full"
+//           width={32}
+//           height={32}
+//         />
+//       )}
+//     </div>
+//   );
+// };
+
+// export default MessageItem;
 "use client";
 
 import React from "react";
 import Image from "next/image";
+
 interface Props {
-  sender: string;      // "You" or other user's name
+  sender: string; // "You" or other user's name
   content: string;
   avatar?: string;
   messageId?: string;
   isUnsent?: boolean;
+  firstname?: string;
+  lastname?: string;
   onUnsend?: (id: string) => void;
-  
-  
 }
 
 const MessageItem: React.FC<Props> = ({
@@ -152,67 +240,71 @@ const MessageItem: React.FC<Props> = ({
   avatar,
   messageId,
   isUnsent,
+  firstname,
+  lastname,
   onUnsend,
 }) => {
   const isUser = sender === "You";
 
-  return (
-    <div
-      className={`flex items-end ${isUser ? "justify-end" : "justify-start"} space-x-2`}
-    >
-      {/* Left avatar for other user */}
-      {!isUser && (
+  // Helper function to render avatar or initials
+  const renderAvatar = (
+    image?: string,
+    username?: string,
+    firstName?: string,
+    lastName?: string
+  ) => {
+    if (image) {
+      return (
         <Image
-          width={32}
-          height={32}
-          src={avatar || "https://i.pravatar.cc/40"}
-          alt={sender}
-          className="w-8 h-8 rounded-full"
+          width={40}
+          height={40}
+          src={image}
+          alt={username || "User"}
+          className="w-10 h-10 rounded-full object-cover"
         />
-      )}
+      );
+    } else {
+      // Fallback: show first letter of firstname + lastname initials
+      const firstInitial = firstName?.[0]?.toUpperCase() || "U";
+      const lastInitial = lastName?.[0]?.toUpperCase() || "";
+      return (
+        <div className="w-10 h-10 rounded-full flex items-center justify-center bg-gray-400 text-white font-bold">
+          {`${firstInitial}${lastInitial}`}
+        </div>
+      );
+    }
+  };
+
+  return (
+    <div className={`flex items-end ${isUser ? "justify-end" : "justify-start"} space-x-2`}>
+      {/* Left avatar for other user */}
+      {!isUser && renderAvatar(avatar, sender, firstname, lastname)}
 
       {/* Message bubble */}
-   <div
-  // className={`px-3 py-2 rounded-lg max-w-xs break-words relative ${
-  //   isUnsent ? "line-through text-gray-400 italic" : ""
-  // }`}
-  //  className={`
-  //         px-3 py-2 rounded-lg max-w-xs break-words relative
-  //         ${isUser ? "bg-blue-500 text-white" : "bg-gray-200 text-gray-900"}
-  //         ${isUnsent ? "line-through text-gray-400 italic bg-gray-300" : ""}
-  //       `}
-   className={`px-3 py-2 rounded-lg max-w-xs break-words relative ${
-    isUnsent
-      ? "bg-gray-200 line-through text-gray-500 italic"
-      : isUser
-      ? "bg-blue-500 text-white"
-      : "bg-gray-300 text-black"
-  }`}
->
-  {content}
+      <div
+        className={`px-3 py-2 rounded-lg max-w-xs break-words relative ${
+          isUnsent
+            ? "bg-gray-200 line-through text-gray-500 italic"
+            : isUser
+            ? "bg-blue-500 text-white"
+            : "bg-gray-300 text-black"
+        }`}
+      >
+        {content}
 
-  {/* Unsend button only for sender and only if not already unsent */}
-  {isUser && !isUnsent && messageId && onUnsend && (
-    <button
-      onClick={() => onUnsend(messageId)}
-      className="absolute -top-4 right-0 text-xs text-red-500 hover:underline"
-    >
-      Unsend
-    </button>
-  )}
-</div>
-
+        {/* Unsend button only for sender and only if not already unsent */}
+        {isUser && !isUnsent && messageId && onUnsend && (
+          <button
+            onClick={() => onUnsend(messageId)}
+            className="absolute -top-4 right-0 text-xs text-red-500 hover:underline"
+          >
+            Unsend
+          </button>
+        )}
+      </div>
 
       {/* Right avatar for current user */}
-      {isUser && (
-        <Image
-          src={avatar || "https://i.pravatar.cc/40?u=you"}
-          alt="You"
-          className="w-8 h-8 rounded-full"
-          width={32}
-          height={32}
-        />
-      )}
+      {isUser && renderAvatar(avatar, "You", firstname, lastname)}
     </div>
   );
 };

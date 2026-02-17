@@ -7,7 +7,9 @@ type Comment = {
   created_at?: string;
   userId?: number;
   userName?: string;
-  userImage?: string; 
+  userImage?: string;
+  firstname?: string;
+  lastname?: string; 
 };
 
 type CommentModalProps = {
@@ -69,14 +71,44 @@ const CommentModal: React.FC<CommentModalProps> = ({
   src={c.userImage || "/default-avatar.png"}
   alt={c.userName ? `${c.userName}'s profile` : `User ${i + 1}`}
 /> */}
-<Image
+{/* <Image
   className="mr-2 rounded-full"
   src={c.userImage || "/default-avatar.png"}
   alt={c.userName ? `${c.userName}'s profile` : `User ${i + 1}`}
   width={32}   // w-8 = 32px
   height={32}  // h-8 = 32px
   unoptimized={false} // optional: true if using external URLs not in next.config.js
-/>
+/> */}
+{/* <div className="mr-2 w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center font-semibold overflow-hidden">
+  {c.userImage && !c.userImage.startsWith("/") ? (
+    <Image
+      src={c.userImage}
+      alt={c.userName ? `${c.userName}'s profile` : "User Avatar"}
+      width={32}
+      height={32}
+      className="rounded-full object-cover"
+    />
+  ) : (
+    <>{`${ c.firstname?.[0] || "U"}${c.lastname?.[0] || ""}`}</>
+  )}
+</div> */}
+<div className="mr-2 w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center font-semibold overflow-hidden">
+  {c.userImage && c.userImage !== "/default-avatar.png" ? (
+    <Image
+      src={c.userImage}
+      alt={c.userName ? `${c.userName}'s profile` : "User Avatar"}
+      width={32}
+      height={32}
+      className="rounded-full object-cover"
+    />
+  ) : (
+    // Fallback to initials
+    <>{`${c.firstname?.[0]?.toUpperCase() || "U"}${c.lastname?.[0]?.toUpperCase() || ""}`}</>
+  )}
+</div>
+
+
+
 
                     <p className="text-sm font-semibold text-gray-900 dark:text-white">
                       {c.userName}

@@ -171,11 +171,12 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
 import Image from "next/image";
-import { FiSmile, FiMessageCircle, FiShare2 } from "react-icons/fi";
+// import { FiSmile, FiMessageCircle, FiShare2 } from "react-icons/fi";
 import { useSession } from "next-auth/react";
 import CommentModal from "../../timeline/_components/commentModal";
 import { initSocket } from "@/utils/webSocket";
 import ReactionStats from "../../timeline/_components/reactCount";
+import ReactionSection from "@/app/components/ReactionSection";
 interface UserProfile {
   id: number;
   firstname: string;
@@ -324,6 +325,7 @@ useEffect(() => {
     
         if (posts.length > 0) fetchReactions();
       }, [posts]);
+      
               useEffect(() => {
                   const fetchEmojis = async () => {
                     try {
@@ -394,6 +396,8 @@ const socketUrl = process.env.SOCKET_URL;
               userId?: number;
               userName?: string;
               userImage?: string;
+              firstname?: string;
+              lastname?: string;
             }
             socket.on("reactions:update", ({ postId, payload }) => {
               if (!payload || !payload.comment) return;
@@ -405,7 +409,9 @@ const socketUrl = process.env.SOCKET_URL;
                 created_at: payload.created_at ?? new Date().toISOString(),
                 userId: payload.userId ?? 0,
                 userName: payload.userName ?? "Anonymous",
-                userImage: payload.userImage ?? "/default-avatar.png", // ✅ important
+                userImage: payload.userImage ?? "/default-avatar.png", // ✅ important\
+                firstname: payload.firstname ?? "User",
+                lastname: payload.lastname ?? "",
           
               };
           
@@ -530,7 +536,7 @@ const openCommentModal = async (postId: number) => {
   // const posts = user.goals || [];
 
   return (
-  <div className="flex flex-col min-h-screen bg-gray-100 dark:bg-gray-900">
+  <div className="flex flex-col min-h-screen bg-gray-100 dark:bg-gray-900 pt-20">
     {/* Profile Header */}
     <div className="flex flex-col items-center py-8 px-4 bg-white dark:bg-gray-800 shadow-md">
       <div className="w-24 h-24 rounded-full bg-blue-500 text-white flex items-center justify-center text-3xl font-bold mb-4 shadow-md">
@@ -619,7 +625,7 @@ const openCommentModal = async (postId: number) => {
             <div className="flex space-x-6 border-t border-gray-200 pt-4 dark:border-gray-700">
               <ReactionStats postId={post.id} />
             </div>
-            <div className="flex space-x-8 border-t pt-4 dark:border-gray-700">
+            {/* <div className="flex space-x-8 border-t pt-4 dark:border-gray-700">
               {selectedReactions[post.id] && (
                 <span className="text-2xl dark:text-gray-100">
                   {(() => {
@@ -670,7 +676,16 @@ const openCommentModal = async (postId: number) => {
               <button className="flex items-center gap-2 text-green-600 font-semibold hover:underline dark:text-green-400">
                 <FiShare2 className="text-xl" /> Share
               </button>
-            </div>
+            </div> */}
+            <ReactionSection
+                post={post}
+                emojis={emojis}
+                selectedReactions={selectedReactions}
+                reactionPickerPostId={reactionPickerPostId}
+                setReactionPickerPostId={setReactionPickerPostId}
+                handleReaction={handleReaction}
+                openCommentModal={openCommentModal}
+              />
           </article>
         ))
       )}

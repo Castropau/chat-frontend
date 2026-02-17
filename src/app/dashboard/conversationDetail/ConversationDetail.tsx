@@ -18,6 +18,8 @@ interface Message {
   isUnsent?: boolean;
   // online?: boolean;
     online?: boolean; // ✅ add this
+    firstname?: string; // ✅ add this
+    lastname?: string;  // ✅ add this
 
 }
 interface UnsentMessageEvent {
@@ -39,6 +41,8 @@ const ConversationDetail: React.FC<ConversationDetailProps> = ({ user }) => {
 
 const [username, setUsername] = useState<string>("");
 const [firstname ,setFirstname ] = useState<string>("");
+const [lastname ,setLastname ] = useState<string>("");
+
 const [email, setEmail ] = useState<string>("");
 // const socketUrl = process.env.SOCKET_URL;
 // Clear typing when switching conversation partner
@@ -53,6 +57,7 @@ useEffect(() => {
     if (storedUser?.id) setUserId(storedUser.id);
       if (storedUser?.username) setUsername(storedUser.username);
        if (storedUser?.firstname) setFirstname(storedUser.firstname);
+if(storedUser?.firstname) setLastname(storedUser.lastname);
         if (storedUser?.email) setEmail(storedUser.email);
       
 console.log("Logged in user:", username, firstname, email);
@@ -288,6 +293,8 @@ interface NewMessageEvent {
   senderId: string;
   content: string;
   avatar?: string;
+  firstname?: string;
+  lastname?: string;
 }
 useEffect(() => {
   if (!userId || !user || !socket) return;
@@ -302,6 +309,8 @@ useEffect(() => {
         senderName: msg.senderId === userId ? "You" : user.username,
         content: msg.content,
         avatar: msg.avatar,
+         firstname: msg.firstname,
+         lastname: msg.lastname,
       },
     ]);
   };
@@ -357,6 +366,8 @@ useEffect(() => {
       ...data,
       senderId: userId,
       receiverId: user.id,
+       firstname,
+      lastname,
     });
   };
 // Inside ConversationDetail.tsx
@@ -485,101 +496,165 @@ useEffect(() => {
       </div>
     );
 
-  return (
-    <div className="h-full flex flex-col overflow-hidden bg-gray-100">
-      {/* Header */}
-      <div className="px-4 py-3 border-b border-gray-200 font-semibold">
-        {user.username}
-      </div>
+//   return (
+//     <div className="h-full flex flex-col overflow-hidden bg-gray-100">
+//       {/* Header */}
+//       <div className="px-4 py-3 border-b border-gray-200 font-semibold">
+//         {user.username}
+//       </div>
 
-      {/* Messages */}
-      <div
-        ref={containerRef}
-        className="flex-1 overflow-y-auto px-4 py-2 space-y-3"
-      >
-        {/* {messages.map((msg) => (
-          <MessageItem
-            key={msg.id}
-            sender={msg.senderName}
-            content={msg.content}
-            avatar={msg.avatar}
-          />
-        ))} */}
-        <div ref={containerRef} className="flex-1 overflow-y-auto px-4 py-2 space-y-3">
-  {messages.map((msg) => (
-    // <MessageItem
-    //   key={msg.id}
-    //   sender={msg.senderName}
-    //   content={msg.content}
-    //   avatar={msg.avatar}
-    //   messageId={msg.id}
-    //   isUnsent={msg.isUnsent}
-    //   onUnsend={handleUnsend}
-    // />
-    <MessageItem
-  key={msg.id}
-  sender={msg.senderName}       // "You" or other user
-  content={msg.content}         // message text
-  avatar={msg.avatar}           // optional avatar
-  messageId={msg.id}            // needed to identify message for unsend
-  isUnsent={msg.isUnsent}       // boolean, true if message was unsent
-  onUnsend={handleUnsend}       // function to call when "Unsend" clicked
-              // online={msg.online}
+//       {/* Messages */}
+//       <div
+//         ref={containerRef}
+//         className="flex-1 overflow-y-auto px-4 py-2 space-y-3"
+//       >
+//         {/* {messages.map((msg) => (
+//           <MessageItem
+//             key={msg.id}
+//             sender={msg.senderName}
+//             content={msg.content}
+//             avatar={msg.avatar}
+//           />
+//         ))} */}
+//         <div ref={containerRef} className="flex-1 overflow-y-auto px-4 py-2 space-y-3">
+//   {messages.map((msg) => (
+//     // <MessageItem
+//     //   key={msg.id}
+//     //   sender={msg.senderName}
+//     //   content={msg.content}
+//     //   avatar={msg.avatar}
+//     //   messageId={msg.id}
+//     //   isUnsent={msg.isUnsent}
+//     //   onUnsend={handleUnsend}
+//     // />
+//     <MessageItem
+//   key={msg.id}
+//   sender={msg.senderName}       // "You" or other user
+//   content={msg.content}         // message text
+//   avatar={msg.avatar}           // optional avatar
+//   messageId={msg.id}            // needed to identify message for unsend
+//   isUnsent={msg.isUnsent}       // boolean, true if message was unsent
+//   onUnsend={handleUnsend}       // function to call when "Unsend" clicked
+//               // online={msg.online}
 
   
-/>
+// />
 
-  ))}
-</div>
+//   ))}
+// </div>
 
-      </div>
-{/* <div className="px-4 py-1 text-sm text-gray-500 italic">
-  {typingUsers.length > 0 && `${typingUsers.join(", ")} is typing...`}
-</div> */}
-{/* {typingUsers.length > 0 && (
-  <div className="px-4 py-1 text-sm text-gray-500 italic">
-    {typingUsers.join(", ")} is typinggg...
-  </div>
-)} */}
-{typingUsers.length > 0 && (
-  <div className="px-4 py-1 text-sm text-gray-500 italic flex items-center space-x-1">
-    <span>{typingUsers.join(", ")} is typing</span>
-    <span className="typing-dots">
-      <span>.</span>
-      <span>.</span>
-      <span>.</span>
-    </span>
-  </div>
-)}
+//       </div>
+// {/* <div className="px-4 py-1 text-sm text-gray-500 italic">
+//   {typingUsers.length > 0 && `${typingUsers.join(", ")} is typing...`}
+// </div> */}
+// {/* {typingUsers.length > 0 && (
+//   <div className="px-4 py-1 text-sm text-gray-500 italic">
+//     {typingUsers.join(", ")} is typinggg...
+//   </div>
+// )} */}
+// {typingUsers.length > 0 && (
+//   <div className="px-4 py-1 text-sm text-gray-500 italic flex items-center space-x-1">
+//     <span>{typingUsers.join(", ")} is typing</span>
+//     <span className="typing-dots">
+//       <span>.</span>
+//       <span>.</span>
+//       <span>.</span>
+//     </span>
+//   </div>
+// )}
 
-      {/* Input */}
-      <div className="sticky bottom-0 w-full bg-white border-t">
-        {/* <MessageInput onSend={handleSend} /> */}
-        {/* <MessageInput onSend={handleSend} onTyping={handleTyping} /> */}
-        <MessageInput
-  onSend={handleSend}
-  onTyping={(isTyping) => {
-    if (!userId || !user) return;
-    if (isTyping) {
-      socket?.emit("typing:start", {
-        senderId: userId,
-        receiverId: user.id,
-        senderName: firstname || email,
-      });
-    } else {
-      socket?.emit("typing:stop", {
-        senderId: userId,
-        receiverId: user.id,
-        senderName: firstname || email,
-      });
-    }
-  }}
-/>
+//       {/* Input */}
+//       <div className="sticky bottom-0 w-full bg-white border-t">
+//         {/* <MessageInput onSend={handleSend} /> */}
+//         {/* <MessageInput onSend={handleSend} onTyping={handleTyping} /> */}
+//         <MessageInput
+//   onSend={handleSend}
+//   onTyping={(isTyping) => {
+//     if (!userId || !user) return;
+//     if (isTyping) {
+//       socket?.emit("typing:start", {
+//         senderId: userId,
+//         receiverId: user.id,
+//         senderName: firstname || email,
+//       });
+//     } else {
+//       socket?.emit("typing:stop", {
+//         senderId: userId,
+//         receiverId: user.id,
+//         senderName: firstname || email,
+//       });
+//     }
+//   }}
+// />
 
 
-      </div>
+//       </div>
+//     </div>
+//   );
+return (
+  <div className="h-full flex flex-col overflow-hidden bg-gray-100 dark:bg-gray-800">
+    {/* Header */}
+    <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700 font-semibold text-gray-900 dark:text-white">
+      {user.username}
     </div>
-  );
+
+    {/* Messages */}
+    <div
+      ref={containerRef}
+      className="flex-1 overflow-y-auto px-4 py-2 space-y-3"
+    >
+      {messages.map((msg) => (
+        <MessageItem
+          key={msg.id}
+          sender={msg.senderName}       // "You" or other user
+          content={msg.content}         // message text
+          avatar={msg.avatar}           // optional avatar
+          messageId={msg.id}            // needed to identify message for unsend
+          isUnsent={msg.isUnsent}       // boolean, true if message was unsent
+          onUnsend={handleUnsend}       // function to call when "Unsend" clicked
+          firstname={msg.firstname}     // pass firstname to show initials
+          lastname={msg.lastname}  
+        />
+      ))}
+    </div>
+
+    {/* Typing Indicator */}
+    {typingUsers.length > 0 && (
+      <div className="px-4 py-1 text-sm text-gray-500 italic flex items-center space-x-1 dark:text-gray-400">
+        <span>{typingUsers.join(", ")} is typing</span>
+        <span className="typing-dots">
+          <span>.</span>
+          <span>.</span>
+          <span>.</span>
+        </span>
+      </div>
+    )}
+
+    {/* Input */}
+    <div className="sticky bottom-0 w-full bg-white dark:bg-gray-700 border-t border-gray-200 dark:border-gray-600">
+      <MessageInput
+        onSend={handleSend}
+        onTyping={(isTyping) => {
+          if (!userId || !user) return;
+          if (isTyping) {
+            socket?.emit("typing:start", {
+              senderId: userId,
+              receiverId: user.id,
+              senderName: firstname || email,
+            });
+          } else {
+            socket?.emit("typing:stop", {
+              senderId: userId,
+              receiverId: user.id,
+              senderName: firstname || email,
+            });
+          }
+        }}
+      />
+    </div>
+  </div>
+);
+
 };
 
 export default ConversationDetail;
