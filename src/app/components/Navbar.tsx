@@ -364,7 +364,7 @@ useEffect(() => {
       {/* <div className="text-xl font-bold text-gray-800 dark:text-white">🌐 GrowUp</div> */}
       <div className="flex items-center gap-2">
   <Image
-    src="/logo/IMG_1114.png" // path to your image in /public folder
+    src="/logo/growup.png" // path to your image in /public folder
     alt="GrowUp Logo"
     width={50}      // adjust size as needed
     height={50}
