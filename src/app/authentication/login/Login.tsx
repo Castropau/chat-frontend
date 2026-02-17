@@ -720,7 +720,7 @@ return (
       
       <div className="relative w-full h-full">
         <Image
-          src="/logo/IMG_1114.png"
+          src="/logo/growup.png"
           alt="Login Illustration"
           fill
           className="object-cover"
