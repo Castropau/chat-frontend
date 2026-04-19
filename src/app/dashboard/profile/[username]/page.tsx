@@ -290,6 +290,7 @@ interface Profile {
   lastname: string;
   email: string;
   username: string;
+  private: number;
 }
 const socketUrl = process.env.SOCKET_URL;
 export default function ProfilePage() {
@@ -1027,6 +1028,22 @@ const openCommentModal = async (postId: number) => {
         </button>
       </div>
     );
+if (profile.private === 1) {
+  return (
+    <div className="flex flex-col items-center justify-center h-screen gap-4">
+      <p className="text-gray-700 dark:text-gray-300 text-lg font-semibold">
+        🔒 This profile is private
+      </p>
+
+      <button
+        onClick={() => router.push("/dashboard/timeline")}
+        className="px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors"
+      >
+        Return to Timeline
+      </button>
+    </div>
+  );
+}
 
   const initials = `${profile.firstname?.[0] || ""}${profile.lastname?.[0] || ""}`.toUpperCase();
 
