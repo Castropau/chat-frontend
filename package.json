@@ -36,6 +36,7 @@
     "sweetalert2": "^11.22.1"
   },
   "devDependencies": {
+    "@cloudflare/next-on-pages": "^1.13.16",
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
     "@types/bcrypt": "^6.0.0",
