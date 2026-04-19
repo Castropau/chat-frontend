@@ -1,5 +1,5 @@
 // app/api/socket/route.ts (or index.ts)
-export const runtime = 'edge';
+
 import { Server as IOServer } from 'socket.io';
 import { NextResponse } from 'next/server';
 import http from 'http';
