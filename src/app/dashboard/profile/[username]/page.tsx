@@ -251,7 +251,7 @@
 //   );
 // }
 "use client";
-
+export const runtime = 'edge';
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";

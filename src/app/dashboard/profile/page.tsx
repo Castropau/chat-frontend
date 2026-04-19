@@ -1,3 +1,4 @@
+export const runtime = 'edge';
 import React from 'react'
 import Profile from '../timeline/_components/Profile'
 
