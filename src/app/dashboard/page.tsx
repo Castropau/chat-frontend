@@ -1,6 +1,6 @@
 
 "use client";
-export const runtime = 'edge';
+
 import React from 'react';
 import MessengerLayout from './messenger/MessengerLayout';
 // import MessengerLayout from '../../dashboard/messenger/MessengerLayout';

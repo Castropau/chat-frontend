@@ -279,7 +279,7 @@
 // };
 
 // export default Page;
-export const runtime = 'edge';
+
 import React from 'react'
 
 const Page = () => {

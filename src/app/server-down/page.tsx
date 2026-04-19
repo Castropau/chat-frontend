@@ -1,5 +1,5 @@
 // pages/server-down.tsx
-export const runtime = 'edge';
+
 import React from 'react';
 
 const ServerDown = () => {
