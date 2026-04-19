@@ -54,7 +54,7 @@
 import { NextResponse } from "next/server";
 import { getPool } from "@/lib/database/db";
 import { RowDataPacket } from "mysql2/promise";
-
+export const runtime = 'edge';
 // ----- Interface Types -----
 export interface UserSearchResult extends RowDataPacket {
   id: number;

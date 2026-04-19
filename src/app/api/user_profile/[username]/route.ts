@@ -184,8 +184,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getPool } from "@/lib/database/db";
 import { RowDataPacket } from "mysql2/promise";
+export const runtime = 'edge';
 
 // ----- Define Types -----
+
 export interface Goal extends RowDataPacket {
   id: number;
   title: string;

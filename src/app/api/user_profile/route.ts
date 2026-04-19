@@ -95,6 +95,7 @@
 import { getPool } from "@/lib/database/db";
 import { NextRequest, NextResponse } from "next/server";
 import { RowDataPacket } from "mysql2/promise";
+export const runtime = 'edge';
 
 // ----- Interface Types -----
 export interface User extends RowDataPacket {
