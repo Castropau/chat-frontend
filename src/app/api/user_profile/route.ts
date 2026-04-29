@@ -114,11 +114,9 @@ export interface ApiResponseUser {
 }
 
 // ----- API Route -----
-export async function GET(
-  req: NextRequest,
-  context: { params: Promise<{ id: string }> } // ✅ params must be a Promise
-): Promise<NextResponse> {
-  const { id } = await context.params; // ✅ unwrap Promise
+export async function GET(req: NextRequest): Promise<NextResponse> {
+  const url = new URL(req.url);
+  const id = url.searchParams.get("id");
   const pool = getPool();
 
   try {

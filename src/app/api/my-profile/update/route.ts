@@ -4,16 +4,16 @@ import { RowDataPacket, ResultSetHeader } from "mysql2/promise"; // Import Resul
 import fs from "fs";
 import path from "path";
 
-export async function PUT(req: Request, context: { params: Promise<{ id: string }> }): Promise<NextResponse> {
+export async function PUT(req: Request): Promise<NextResponse> {
   try {
-    const { id } = await context.params;
+    const pool = getPool();
+    const formData = await req.formData();
+
+    const id = formData.get("id")?.toString();
 
     if (!id || isNaN(Number(id))) {
       return NextResponse.json({ error: "Invalid or missing user ID" }, { status: 400 });
     }
-
-    const pool = getPool();
-    const formData = await req.formData();
 
     const firstname = formData.get("firstname")?.toString();
     const lastname = formData.get("lastname")?.toString();

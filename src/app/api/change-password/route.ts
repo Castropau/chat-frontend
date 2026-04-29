@@ -4,23 +4,19 @@ import bcrypt from "bcrypt";
 import { ResultSetHeader, RowDataPacket } from "mysql2"; // For MySQL result typing
 import { getPool } from "@/lib/database/db";
 
-export async function PUT(
-  req: Request,
-  context: { params: Promise<{ id: string }> }
-): Promise<NextResponse> {
+export async function PUT(req: Request): Promise<NextResponse> {
   try {
-    const { id } = await context.params;
+    const pool = getPool();
+    const formData = await req.formData();
+
+    const id = formData.get("id")?.toString();
+    const currentPassword = formData.get("currentPassword")?.toString();
+    const newPassword = formData.get("newPassword")?.toString();
+    const confirmPassword = formData.get("confirmPassword")?.toString();
 
     if (!id || isNaN(Number(id))) {
       return NextResponse.json({ error: "Invalid or missing user ID" }, { status: 400 });
     }
-
-    const pool = getPool();
-    const formData = await req.formData();
-
-    const currentPassword = formData.get("currentPassword")?.toString();
-    const newPassword = formData.get("newPassword")?.toString();
-    const confirmPassword = formData.get("confirmPassword")?.toString();
 
     if (!currentPassword || !newPassword || !confirmPassword) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });

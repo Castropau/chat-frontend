@@ -138,14 +138,11 @@ export interface ApiError {
 }
 
 // ----- API Route -----
-export async function GET(
-  req: Request,
-  context: { params: Promise<{ id: string }> } // ✅ params is a Promise
-): Promise<NextResponse> {
+export async function GET(req: Request): Promise<NextResponse> {
   try {
-    const { id } = await context.params; // ✅ unwrap Promise
     const pool = getPool();
-    const userId = parseInt(id, 10);
+    const url = new URL(req.url);
+    const userId = parseInt(url.searchParams.get("id") || "", 10);
 
     if (isNaN(userId)) {
       return NextResponse.json({ error: "Invalid user ID" }, { status: 400 });
